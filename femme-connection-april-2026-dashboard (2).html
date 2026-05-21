@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Femme Connection — April 2026 Performance Report</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;500;600;700;800&family=Karla:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script>
+    if (typeof window.ResizeObserver === 'undefined') {
+      window.ResizeObserver = class { observe(){} unobserve(){} disconnect(){} };
+    }
+  </script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/react-is@18.3.1/umd/react-is.production.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/prop-types@15.8.1/prop-types.min.js"></script>
+  <script crossorigin src="https://cdn.jsdelivr.net/npm/recharts@2.15.4/umd/Recharts.min.js"></script>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html,body{background:#F7EFE8;font-family:'Karla',system-ui,sans-serif;color:#000;}
+    button{cursor:pointer;font-family:inherit;}
+    h1,h2,h3,h4{font-family:'Bodoni Moda',serif;font-weight:600;}
+    table{border-collapse:collapse;}
+    ::-webkit-scrollbar{height:8px;width:8px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(27,68,58,0.3);border-radius:4px;}
+    #loading{
+      position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+      background:#E6D1C4;color:#1B443A;font-family:'Karla',sans-serif;
+      font-size:13px;letter-spacing:0.16em;text-transform:uppercase;z-index:9999;
+      transition:opacity 0.3s;font-weight:600;
+    }
+    #loading.hidden{opacity:0;pointer-events:none;}
+    .spinner{
+      width:32px;height:32px;border:3px solid rgba(27,68,58,0.2);border-top-color:#FF99B9;
+      border-radius:50%;animation:spin 0.8s linear infinite;margin-right:14px;
+    }
+    @keyframes spin{to{transform:rotate(360deg);}}
+  </style>
+</head>
+<body>
+  <div id="loading"><div class="spinner"></div>Loading report</div>
+  <div id="root"></div>
+<script>
+(function(){
+  const { useState } = React;
+  const { AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, LineChart, Line } = Recharts;
+
+  const C = {
+    pink:"#FF99B9", green:"#1B443A", terracotta:"#E2745D", buff:"#E6D1C4",
+    black:"#000000", white:"#FFFFFF",
+    bg:"#F7EFE8", card:"#FFFFFF",
+    border:"#EBDDD2", divider:"#F0E4D8",
+    muted:"#6B5F58", ghost:"#B8A99F",
+    pinkSoft:"#FFE2EC", greenSoft:"#E8EDE9", terraSoft:"#F8E3DC"
+  };
+
+  const LOGO_URI = "data:image/jpeg;base64,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";
+
+  function FemmeLogo(props) {
+    const h = (props && props.height) || 56;
+    return React.createElement("img", {
+      src: LOGO_URI, alt: "Femme Connection",
+      style: { height: h, width: "auto", display: "block" }
+    });
+  }
+
+  /* KLAVIYO DATA */
+  const HERO = { totalRevenue:"$149,901", attributedRev:"$60,950", attributionPct:"40.66%", rpr:"$0.08", emailRecipients:"1,273,027", smsRecipients:"2,933" };
+  const growthMoM = { current:149901, previous:145866, diff:4035, pct:2.77 };
+  const growthYoY = { current:149901, previous:139498, diff:10403, pct:7.46 };
+
+  const channelMix = [
+    { name:"Campaign Revenue", value:32270.01, color:C.pink },
+    { name:"Flow Revenue",     value:28679.80, color:C.green },
+    { name:"Flow SMS Revenue", value: 6198.24, color:C.terracotta }
+  ];
+
+  const flowMetricsMoM = [
+    { metric:"Total Recipients",  value:"38,389",      delta:-28.40, neg:false, rating:null },
+    { metric:"Open Rate",         value:"39.78%",      delta: -6.95, neg:true,  rating:"Poor" },
+    { metric:"Click Rate",        value:"3.98%",       delta:  7.92, neg:false, rating:"Good" },
+    { metric:"Placed Order Rate", value:"0.54%",       delta: 26.00, neg:false, rating:"Poor" },
+    { metric:"Flow Revenue",      value:"$28,679.80", delta: -2.38, neg:true,  rating:null }
+  ];
+
+  const flowMetricsYoY = [
+    { metric:"Total Recipients",  value:"56,002",      delta:-10.62, neg:true,  rating:null },
+    { metric:"Open Rate",         value:"42.55%",      delta: -4.07, neg:true,  rating:"Fair" },
+    { metric:"Click Rate",        value:"3.71%",       delta:-20.20, neg:true,  rating:"Good" },
+    { metric:"Placed Order Rate", value:"0.42%",       delta:-30.38, neg:true,  rating:"Poor" },
+    { metric:"Flow Revenue",      value:"$33,227.42", delta:  3.99, neg:false, rating:null }
+  ];
+
+  const campaignMetricsYoY = [
+    { metric:"Total Recipients",      value:"1.23M",    delta: 55.1, neg:false },
+    { metric:"Unique Opens",          value:"461K",     delta:  8.2, neg:false },
+    { metric:"Open Rate",             value:"37.4%",    delta:-30.2, neg:true  },
+    { metric:"Unique Clicks",         value:"11.9K",    delta:  0.4, neg:false },
+    { metric:"Click Rate",            value:"0.964%",   delta:-35.3, neg:true  },
+    { metric:"Unique Conversions",    value:"302",      delta:  6.7, neg:false },
+    { metric:"Conversion Rate",       value:"0.024%",   delta:-33.3, neg:true  },
+    { metric:"Conversion Value",      value:"$32.3K",  delta: 11.3, neg:false },
+    { metric:"Revenue Per Recipient", value:"$0.0262", delta:-28.2, neg:true  },
+    { metric:"Average Order Value",   value:"$105",    delta:  3.3, neg:false }
+  ];
+
+  const campaignMetricsMoM = [
+    { metric:"Total Recipients",      value:"1.23M",    delta: 30.3, neg:false },
+    { metric:"Unique Opens",          value:"461K",     delta: 59.3, neg:false },
+    { metric:"Open Rate",             value:"37.4%",    delta: 22.4, neg:false },
+    { metric:"Unique Clicks",         value:"11.9K",    delta: 40.9, neg:false },
+    { metric:"Click Rate",            value:"0.964%",   delta:  8.2, neg:false },
+    { metric:"Unique Conversions",    value:"302",      delta: 30.7, neg:false },
+    { metric:"Conversion Rate",       value:"0.024%",   delta:  0.0, neg:false },
+    { metric:"Conversion Value",      value:"$32.3K",  delta: 33.6, neg:false },
+    { metric:"Revenue Per Recipient", value:"$0.0262", delta:  2.6, neg:false },
+    { metric:"Average Order Value",   value:"$105",    delta:  1.9, neg:false }
+  ];
+
+  const smsBenchmarks = [
+    { metric:"Conversion Rate (SMS)",      segment:"All Welcome Series Flows",     value:"11.6%",   rating:"Excellent" },
+    { metric:"Click-through Rate (Email)", segment:"All Welcome Series Flows",     value:"16.5%",   rating:"Excellent" },
+    { metric:"Bounce Rate (Email)",        segment:"All Browse Abandonment Flows", value:"0.0808%", rating:"Excellent" },
+    { metric:"Bounce Rate (Email)",        segment:"All Campaigns",                value:"0.125%",  rating:"Excellent" },
+    { metric:"Unsubscribe Rate (Email)",   segment:"All Campaigns",                value:"0.128%",  rating:"Excellent" }
+  ];
+
+  const smsKpis = {
+    revenue:{value:"$6,198",delta:5.4}, deliveries:{value:"2,919",delta:60.2},
+    subscribers:{value:"22,056",delta:99.1}, newSubs:{value:"569",delta:-56.2},
+    excluded:{value:"241",delta:92.8}, rpr:{value:"$2.12",delta:-34.2},
+    deliveryRate:{value:"100%",sub:"2,919 deliveries"}, clickRate:{value:"6%",sub:"231 clicks"},
+    orderRate:{value:"2%",sub:"63 unique orders"}, clickToOrder:{value:"34.62%",delta:53.5},
+    aov:{value:"$98.38",delta:0.4}, unsubRate:{value:"1.44%",delta:-43.0,sub:"42 unsubscribed"},
+    failedRate:{value:"0.55%",delta:-9.0,sub:"16 failed"}
+  };
+
+  const businessPerf = [
+    { metric:"Average Cart Size",    rating:"Fair", value:"2.2",   pct:"35th" },
+    { metric:"Average Order Count",  rating:"Good", value:"2",     pct:"74th" },
+    { metric:"Average Order Value",  rating:"Fair", value:"$69",   pct:"29th" },
+    { metric:"% of Orders Returned", rating:"Poor", value:"2.84%", pct:"17th" }
+  ];
+
+  const topFlows = [
+    { name:"Instant Audiences — Welcome Series Non-Buyers (Feb'26)", status:"Draft", recipients:"214",   deliv:"99.5%", order:"16.9%",  revenue:"$3.23K", rpr:"$15.20" },
+    { name:"Welcome Series for Non-Buyers (May 26)",                 status:"Live",  recipients:"184",   deliv:"98.9%", order:"5.5%",   revenue:"$979",   rpr:"$5.38"  },
+    { name:"Abandoned Cart 2025 (May 2026)",                         status:"Live",  recipients:"1.18K", deliv:"99.8%", order:"0.677%", revenue:"$741",   rpr:"$0.627" },
+    { name:"Immediate Cross-Sell/Up-sell 2025 (May'26)",             status:"Live",  recipients:"217",   deliv:"100%",  order:"1.38%",  revenue:"$545",   rpr:"$2.51"  },
+    { name:"Abandoned Checkout 2025 (May 2026)",                     status:"Live",  recipients:"61",    deliv:"98.4%", order:"5%",     revenue:"$317",   rpr:"$5.28"  }
+  ];
+
+  const topMetrics = [
+    { metric:"Bounce Rate (Email)",        segment:"All Campaigns",                value:"0.0591%", rating:"Excellent" },
+    { metric:"Open Rate (Email)",          segment:"All Browse Abandonment Flows", value:"69.9%",   rating:"Excellent" },
+    { metric:"Click-through Rate (Email)", segment:"All Welcome Series Flows",     value:"15.8%",   rating:"Excellent" },
+    { metric:"Click-through Rate (Email)", segment:"All Campaigns",                value:"3.05%",   rating:"Excellent" },
+    { metric:"Bounce Rate (Email)",        segment:"All Browse Abandonment Flows", value:"0.144%",  rating:"Excellent" }
+  ];
+
+  const bottomMetrics = [
+    { metric:"Spam Report Rate (Email)", segment:"All Welcome Series Flows", value:"0.245%",  rating:"Poor" },
+    { metric:"Open Rate (Email)",        segment:"All Campaigns",            value:"30%",     rating:"Poor" },
+    { metric:"Spam Report Rate (Email)", segment:"All Thank You Flows",      value:"0.0626%", rating:"Poor" },
+    { metric:"Unsubscribe Rate (Email)", segment:"All Thank You Flows",      value:"1.13%",   rating:"Poor" },
+    { metric:"Conversion Rate (Email)",  segment:"All Abandoned Cart Flows", value:"0.452%",  rating:"Poor" }
+  ];
+
+  const mothersDayCampaigns = [
+    { date:"10 May", time:"10:15 AM", name:"Sale Mother's Day (4)",                value:1469.87, subject:"Midnight Cutoff: 20% Off Everything" },
+    { date:"09 May", time:"08:45 AM", name:"Sale Mother's Day (3)",                value:2451.69, subject:"20% OFF everything! Mum deserves it." },
+    { date:"08 May", time:"08:00 AM", name:"Sale Mother's Day (2)",                value:2203.79, subject:"The Mother's Day Sale Starts Now!" },
+    { date:"07 May", time:"08:00 AM", name:"Sale Mother's Day (1)",                value:4003.16, subject:"VIP Early Access: 20% Off Everything" },
+    { date:"03 May", time:"10:15 AM", name:"Sale - Mother's Day Pre-sale (clone)", value:4594.96, subject:"Ends Soon: 20% Off Everything!" },
+    { date:"01 May", time:"08:00 AM", name:"Sale - Mother's Day Pre-sale",         value:5137.42, subject:"20% Off Everything for Mother's Day" },
+    { date:"30 Apr", time:"05:45 PM", name:"In-store Mother's Day VIP Night",      value:  75.99, subject:"Join Us for Mother's Day VIP Night" },
+    { date:"27 Apr", time:"05:00 PM", name:"Treat Yourself",                       value: 922.87, subject:"This Is Your Sign to Treat Yourself!" },
+    { date:"24 Apr", time:"08:00 PM", name:"Mother's Day Wishlist",                value: 972.58, subject:"A Mother's Day Wishlist, Thoughtfully Curated" },
+    { date:"19 Apr", time:"11:00 AM", name:"Mother's Day Gift Guide",              value:1080.87, subject:"Mother's Day Gift Guide" },
+    { date:"17 Apr", time:"06:30 PM", name:"Mother's Day Giveaway",                value: 374.93, subject:"WIN a $200 Spa Voucher + $200 to Spend" },
+    { date:"15 Apr", time:"08:00 PM", name:"Outfit Inspo - Mother's Day",          value: 705.40, subject:"Outfit inspiration for Mums" }
+  ];
+
+  const abTests = [
+    { name:"Welcome Series for Non-Buyers", winner:"Flow B",
+      reason:"Higher placed order rate (9% vs 5%) and revenue ($3.44K vs $2.20K) on Email #1.",
+      detail:"Flow A had a higher open rate (53.5% vs 49.6%), but Flow B converted those opens into nearly double the revenue on Email #1. In a welcome series, Email #1 captures the highest intent — Flow B captures substantially more value upfront. Net revenue across the full flow favours Flow B by a wide margin.",
+      flowA:"Open 53.5% · Click 12.8% · Order 5% · $2.20K",
+      flowB:"Open 49.6% · Click 11.9% · Order 9% · $3.44K" },
+    { name:"Site Abandonment 2025", winner:"Flow A",
+      reason:"Only Flow A generated revenue on Email #1 (0.7% order rate, $160); Flow B produced $0.",
+      detail:"Flow A's Email #2 also outperformed Flow B on open rate (71.4% vs 55.5%). Flow B drove more top-of-funnel activity but failed to convert. In site abandonment, the goal is recovery revenue.",
+      flowA:"Email #1: 55.2% open · 0.7% order · $160",
+      flowB:"Email #1: 58.4% open · 0% order · $0" },
+    { name:"Abandoned Checkout 2025", winner:"Flow B",
+      reason:"Generated more total revenue across the flow (~$1,026 vs Flow A's ~$389).",
+      detail:"Email #2 in Flow B drove $790 in placed orders (2% conversion), while Flow A's Email #2 produced $0. Final SMS in Flow B converted at 8% with $236 — nearly triple Flow A's $81 on the same touchpoint.",
+      flowA:"Total: ~$389 · Email #2: $0",
+      flowB:"Total: ~$1,026 · Email #2: $790 · SMS: 8%/$236" },
+    { name:"Abandoned Cart 2025", winner:"Flow B",
+      reason:"Roughly 4× more total revenue across the flow (~$4,537 vs Flow A's ~$1,083).",
+      detail:"Email #3 alone drove $1.81K in placed orders for Flow B vs $87.50 for Flow A. SMS #1 in Flow B converted at 1% with $976 — more than 5× Flow A's $185 on the same send.",
+      flowA:"Total: ~$1,083 · Email #3: $87.50",
+      flowB:"Total: ~$4,537 · Email #3: $1.81K · SMS: $976" },
+    { name:"Immediate Cross-Sell / Up-sell", winner:"Flow A",
+      reason:"Generated more total revenue across the flow (~$656 vs Flow B's ~$529).",
+      detail:"SMS #1 in Flow A drove $510 in placed orders (1.9% conversion), nearly 15× Flow B's $35. Flow A's SMS conversion rate (1.9%) more than doubled Flow B's (0.9%). The SMS reminder is the decisive touchpoint in this short flow.",
+      flowA:"Total: ~$656 · SMS #1: $510 (1.9% order)",
+      flowB:"Total: ~$529 · SMS #1: $35 (0.9% order)" },
+    { name:"New Customer Post Purchase", winner:"Flow A",
+      reason:"Only Flow A generated revenue across the entire flow (~$140); Flow B produced $0.",
+      detail:"Email #1 in Flow A drove $80 in placed orders (1.2% conversion). SMS #1 in Flow A converted at 2.3% with $60. In a post-purchase flow, incremental revenue is the only metric that matters.",
+      flowA:"Total: $140 · Email #1: $80 · SMS: $60",
+      flowB:"Total: $0 across all touchpoints" },
+    { name:"Browse Abandonment 2025", winner:"Flow B",
+      reason:"More total revenue across the flow (~$253 vs Flow A's ~$148).",
+      detail:"Email #1 in Flow B drove $253 in placed orders (1.2% conversion); Flow A's Email #1 produced $0. Browse abandonment converts best when intent is highest right after the browse — Flow B captures that value immediately.",
+      flowA:"Total: $148 · Email #1: $0 · Email #2: $148",
+      flowB:"Total: $253 · Email #1: $253" }
+  ];
+
+  /* YOTPO DATA */
+  const yotpoLoyalty = {
+    headline: { redeemingCustomers:"100", participationRate:"7.6%", addedRevPerCust:"+$66", addedRevenue:"$6,624" },
+    redeemerVsNon: [
+      { metric:"Average Purchases",            red:"1.63", non:"1.09" },
+      { metric:"Average Revenue Per Customer", red:"$167", non:"$100" },
+      { metric:"Repeat Purchase Rate",         red:"38%",  non:"7%" },
+      { metric:"Average Order Value",          red:"$102", non:"$92" }
+    ],
+    overview: [
+      { group:"Non-Redeemers", customers:1224, orders:1333, revenue:"$122,830", repeat: 88, avg:"1.09" },
+      { group:"Redeemers",     customers: 100, orders: 163, revenue: "$16,659", repeat: 38, avg:"1.63" },
+      { group:"Total",         customers:1324, orders:1496, revenue:"$139,490", repeat:126, avg:"1.13" }
+    ]
+  };
+
+  const yotpoVipTiers = {
+    headline: { customersInTiers:"43,947", purchasingCustomers:"977", redeemingCustomers:"106", avgRevPerCust:"$110", revenueFromTiers:"$107,194" },
+    tiers: [
+      { name:"Courture Queen", total:53,    newC:0,   retained:0, upgraded:0,  dropped:1 },
+      { name:"Visionary",      total:91,    newC:10,  retained:1, upgraded:0,  dropped:4 },
+      { name:"Style Icon",     total:144,   newC:11,  retained:0, upgraded:9,  dropped:8 },
+      { name:"Trendsetter",    total:474,   newC:42,  retained:1, upgraded:10, dropped:35 },
+      { name:"Curator",        total:43289, newC:951, retained:0, upgraded:44, dropped:0 }
+    ]
+  };
+
+  const yotpoReviews = {
+    reviews:       { value:"156",   delta:60.0,  allTime:"5,129" },
+    avgStarRating: { value:"4.58",  delta:-0.2,  allTime:"4.68"  },
+    orderToReview: { value:"5.85%", delta:-11.1, allTime:"4.91%" }
+  };
+
+  const aud  = n => "$" + Number(n).toLocaleString("en-AU", { minimumFractionDigits:0, maximumFractionDigits:0 });
+  const audD = n => "$" + Number(n).toLocaleString("en-AU", { minimumFractionDigits:2, maximumFractionDigits:2 });
+
+  /* ════════════════════ UI COMPONENTS ════════════════════ */
+
+  function PageHeader({ eyebrow, title, tagline, kicker }) {
+    return React.createElement("div", { style: { marginBottom: 40, position: "relative", paddingTop: 8 } },
+      React.createElement("div", { style: { position: "absolute", top: -10, right: -20, width: 80, height: 80, borderRadius: "50%", background: C.pink, opacity: 0.25, zIndex: 0 } }),
+      React.createElement("div", { style: { position: "absolute", top: 50, right: 80, width: 28, height: 28, borderRadius: "50%", background: C.terracotta, opacity: 0.4, zIndex: 0 } }),
+      React.createElement("div", { style: { position: "relative", zIndex: 1 } },
+        eyebrow && React.createElement("div", {
+          style: { fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: C.terracotta, marginBottom: 16 }
+        }, eyebrow),
+        kicker && React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 38, color: C.pink, marginBottom: -4, lineHeight: 1 } }, kicker),
+        React.createElement("h1", {
+          style: { fontFamily: "'Bodoni Moda',serif", fontSize: 52, fontWeight: 500, color: C.green, lineHeight: 1.05, letterSpacing: "-0.015em", marginBottom: 14 }
+        }, title),
+        tagline && React.createElement("p", {
+          style: { fontFamily: "'Karla',sans-serif", fontSize: 15, color: C.muted, lineHeight: 1.6, maxWidth: 820, fontWeight: 400 }
+        }, tagline)
+      )
+    );
+  }
+
+  function Section({ title, subtitle, children, style }) {
+    return React.createElement("section", { style: Object.assign({ marginBottom: 44 }, style || {}) },
+      (title || subtitle) && React.createElement("div", { style: { marginBottom: 20 } },
+        title && React.createElement("h2", {
+          style: { fontFamily: "'Bodoni Moda',serif", fontSize: 32, fontWeight: 500, color: C.green, letterSpacing: "-0.01em", lineHeight: 1.1, marginBottom: subtitle ? 6 : 0 }
+        }, title),
+        subtitle && React.createElement("p", { style: { fontSize: 13, color: C.muted, lineHeight: 1.55, maxWidth: 820 } }, subtitle)
+      ),
+      children
+    );
+  }
+
+  function Card({ children, style, accent, dark }) {
+    const bg = dark ? C.green : C.card;
+    const txt = dark ? C.white : C.black;
+    return React.createElement("div", {
+      style: Object.assign({
+        background: bg, color: txt,
+        border: dark ? "none" : "1px solid " + C.border,
+        borderRadius: 4,
+        padding: 28,
+        borderTop: accent ? "4px solid " + accent : (dark ? "none" : "1px solid " + C.border)
+      }, style || {})
+    }, children);
+  }
+
+  function StatLabel({ children, color }) {
+    return React.createElement("div", {
+      style: { fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: color || C.muted, marginBottom: 10 }
+    }, children);
+  }
+
+  function HeroStat({ label, value, prev, delta, neg, comparison, big, color }) {
+    const positive = delta != null && delta >= 0 && !neg;
+    const fontSize = big ? 64 : 52;
+    return React.createElement("div", null,
+      React.createElement(StatLabel, null, label),
+      React.createElement("div", {
+        style: { fontFamily: "'Bodoni Moda',serif", fontSize: fontSize, fontWeight: 500, color: color || C.green, lineHeight: 1, letterSpacing: "-0.025em", marginBottom: 12 }
+      }, value),
+      (prev || delta != null) && React.createElement("div", {
+        style: { display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }
+      },
+        prev && React.createElement("span", { style: { fontSize: 13, color: C.ghost, textDecoration: "line-through" } }, prev),
+        delta != null && React.createElement("span", {
+          style: { fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, color: positive ? C.green : C.terracotta, letterSpacing: "0.06em", textTransform: "uppercase" }
+        }, (positive ? "▲" : "▼") + "  " + Math.abs(delta) + "%  " + (comparison || "vs March 2026"))
+      )
+    );
+  }
+
+  function SmallStat({ label, value, sub, delta, neg, comparison }) {
+    const positive = delta != null && delta >= 0 && !neg;
+    return React.createElement("div", null,
+      React.createElement(StatLabel, null, label),
+      React.createElement("div", {
+        style: { fontFamily: "'Bodoni Moda',serif", fontSize: 32, fontWeight: 500, color: C.green, lineHeight: 1, marginBottom: 6, letterSpacing: "-0.02em" }
+      }, value),
+      sub && React.createElement("div", { style: { fontSize: 11, color: C.muted, marginBottom: 6, letterSpacing: "0.02em" } }, sub),
+      delta != null && React.createElement("div", {
+        style: { fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, color: positive ? C.green : C.terracotta, letterSpacing: "0.06em", textTransform: "uppercase" }
+      }, (positive ? "▲" : "▼") + "  " + Math.abs(delta) + "%  " + (comparison || "vs March"))
+    );
+  }
+
+  function RatingPill({ rating }) {
+    const map = {
+      "Excellent": { bg: C.greenSoft, fg: C.green },
+      "Good":      { bg: C.greenSoft, fg: C.green },
+      "Fair":      { bg: C.buff,      fg: "#8a5a2b" },
+      "Poor":      { bg: C.terraSoft, fg: C.terracotta }
+    };
+    const m = map[rating] || { bg: C.pinkSoft, fg: C.pink };
+    return React.createElement("span", {
+      style: { background: m.bg, color: m.fg, fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 100, letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "'Karla',sans-serif" }
+    }, rating);
+  }
+
+  function StatusPill({ status }) {
+    const live = status === "Live";
+    return React.createElement("span", {
+      style: {
+        background: live ? C.greenSoft : C.buff,
+        color:      live ? C.green     : "#8a5a2b",
+        fontSize: 10, fontWeight: 700, padding: "4px 12px", borderRadius: 100, letterSpacing: "0.1em", textTransform: "uppercase", fontFamily: "'Karla',sans-serif"
+      }
+    }, "● " + status);
+  }
+
+  function Delta({ delta, neg }) {
+    if (delta == null) return null;
+    const positive = delta >= 0 && !neg;
+    return React.createElement("span", {
+      style: { fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, color: positive ? C.green : C.terracotta, whiteSpace: "nowrap", letterSpacing: "0.04em" }
+    }, (positive ? "▲" : "▼") + "  " + Math.abs(delta).toFixed(2) + "%");
+  }
+
+  function NarrativeBlock({ title, children, accent }) {
+    return React.createElement("div", {
+      style: {
+        background: accent === "pink" ? C.pinkSoft : (accent === "terra" ? C.terraSoft : C.buff),
+        padding: "24px 28px",
+        borderRadius: 4,
+        borderLeft: "3px solid " + (accent === "pink" ? C.pink : (accent === "terra" ? C.terracotta : C.green))
+      }
+    },
+      title && React.createElement("div", {
+        style: { fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: C.green, marginBottom: 12 }
+      }, title),
+      React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 14, lineHeight: 1.7, color: C.black } }, children)
+    );
+  }
+
+  function MetricRow({ metric, value, delta, neg, rating, last }) {
+    return React.createElement("tr", { style: { borderBottom: last ? "none" : "1px solid " + C.divider } },
+      React.createElement("td", { style: { padding: "16px 8px 16px 0", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 500 } }, metric),
+      React.createElement("td", { style: { padding: "16px 8px", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, fontWeight: 500, color: C.green, letterSpacing: "-0.015em" } }, value),
+      React.createElement("td", { style: { padding: "16px 0 16px 8px", textAlign: "right", width: 90 } },
+        React.createElement("div", { style: { display: "flex", justifyContent: "flex-end", alignItems: "center", gap: 8 } },
+          rating && React.createElement(RatingPill, { rating: rating }),
+          delta != null && React.createElement(Delta, { delta: delta, neg: neg })
+        )
+      )
+    );
+  }
+
+  /* ════════════════════ KLAVIYO OVERVIEW TAB ════════════════════ */
+  function OverviewTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Klaviyo · 1 — 30 April 2026",
+        title: "Klaviyo Channel Performance",
+        tagline: "Complete summary of email and SMS performance for April 2026 — headline KPIs, month-on-month and year-on-year growth, channel revenue mix, and business benchmarks."
+      }),
+
+      React.createElement(Section, { title: "Headline Performance", subtitle: "The top-line figures for the reporting period." },
+        React.createElement(Card, { accent: C.pink },
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1.1fr 1fr 1fr", gap: 40, marginBottom: 36 } },
+            React.createElement(HeroStat, { label: "Total Revenue",            value: HERO.totalRevenue, big: true }),
+            React.createElement(HeroStat, { label: "Total Attributed Revenue", value: HERO.attributedRev }),
+            React.createElement(HeroStat, { label: "Revenue Per Recipient",    value: HERO.rpr })
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, marginBottom: 28 } }),
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28 } },
+            React.createElement(SmallStat, { label: "Total Email Recipients", value: HERO.emailRecipients }),
+            React.createElement(SmallStat, { label: "Total SMS Recipients",   value: HERO.smsRecipients }),
+            React.createElement(SmallStat, { label: "Klaviyo Attribution",    value: HERO.attributionPct, sub: "of total revenue" })
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Growth Performance" },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 } },
+          React.createElement(Card, { accent: C.green },
+            React.createElement(StatLabel, null, "Month-on-Month · March vs April 2026"),
+            React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 16, marginTop: 8, marginBottom: 18 } },
+              React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 44, fontWeight: 500, color: C.green, letterSpacing: "-0.02em", lineHeight: 1 } }, aud(growthMoM.current)),
+              React.createElement("span", { style: { fontSize: 14, color: C.ghost, textDecoration: "line-through" } }, aud(growthMoM.previous))
+            ),
+            React.createElement("div", { style: { display: "flex", gap: 24, alignItems: "center" } },
+              React.createElement("div", { style: { padding: "8px 16px", background: C.greenSoft, borderRadius: 100, fontFamily: "'Karla',sans-serif", fontSize: 13, fontWeight: 700, color: C.green, letterSpacing: "0.04em" } }, "▲ " + growthMoM.pct + "% growth"),
+              React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.muted } }, "+" + aud(growthMoM.diff) + " absolute")
+            )
+          ),
+          React.createElement(Card, { accent: C.green },
+            React.createElement(StatLabel, null, "Year-on-Year · April 2025 vs April 2026"),
+            React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 16, marginTop: 8, marginBottom: 18 } },
+              React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 44, fontWeight: 500, color: C.green, letterSpacing: "-0.02em", lineHeight: 1 } }, aud(growthYoY.current)),
+              React.createElement("span", { style: { fontSize: 14, color: C.ghost, textDecoration: "line-through" } }, aud(growthYoY.previous))
+            ),
+            React.createElement("div", { style: { display: "flex", gap: 24, alignItems: "center" } },
+              React.createElement("div", { style: { padding: "8px 16px", background: C.greenSoft, borderRadius: 100, fontFamily: "'Karla',sans-serif", fontSize: 13, fontWeight: 700, color: C.green, letterSpacing: "0.04em" } }, "▲ " + growthYoY.pct + "% growth"),
+              React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.muted } }, "+" + aud(growthYoY.diff) + " absolute")
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Campaign + Flow Revenue Mix", subtitle: "Total deliveries (campaigns + SMS): 1,275,960 across the period." },
+        React.createElement(Card, null,
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1.1fr 1fr", gap: 36, alignItems: "center" } },
+            React.createElement("div", { style: { width: "100%", height: 280 } },
+              React.createElement(ResponsiveContainer, { width: "100%", height: "100%" },
+                React.createElement(PieChart, null,
+                  React.createElement(Pie, {
+                    data: channelMix, dataKey: "value", nameKey: "name",
+                    cx: "50%", cy: "50%", innerRadius: 70, outerRadius: 110,
+                    paddingAngle: 2, stroke: "none"
+                  }, channelMix.map((c, i) => React.createElement(Cell, { key: i, fill: c.color }))),
+                  React.createElement(Tooltip, { formatter: (v) => audD(v) })
+                )
+              )
+            ),
+            React.createElement("div", null,
+              channelMix.map((c, i) => {
+                const total = channelMix.reduce((s, x) => s + x.value, 0);
+                return React.createElement("div", {
+                  key: i,
+                  style: { display: "flex", alignItems: "center", gap: 16, padding: "18px 0", borderBottom: i < channelMix.length - 1 ? "1px solid " + C.divider : "none" }
+                },
+                  React.createElement("div", { style: { width: 16, height: 16, borderRadius: 3, background: c.color, flexShrink: 0 } }),
+                  React.createElement("div", { style: { flex: 1 } },
+                    React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, fontWeight: 600, color: C.black, marginBottom: 2 } }, c.name),
+                    React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, letterSpacing: "0.04em" } }, ((c.value / total) * 100).toFixed(1) + "% of attributed revenue")
+                  ),
+                  React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 24, fontWeight: 500, color: C.green, letterSpacing: "-0.015em" } }, audD(c.value))
+                );
+              })
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Business Performance Metrics", subtitle: "Customer purchasing behaviour benchmarked against Klaviyo's fashion industry percentiles." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "Rating", "Your Value", "Percentile"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 ? "left" : (i === 2 || i === 3 ? "right" : "center"), padding: "0 0 14px", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              businessPerf.map((b, i) => React.createElement("tr", { key: i, style: { borderBottom: i < businessPerf.length - 1 ? "1px solid " + C.divider : "none" } },
+                React.createElement("td", { style: { padding: "18px 0", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, fontWeight: 600 } }, b.metric),
+                React.createElement("td", { style: { padding: "18px 0", textAlign: "center" } }, React.createElement(RatingPill, { rating: b.rating })),
+                React.createElement("td", { style: { padding: "18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 24, fontWeight: 500, color: C.green, letterSpacing: "-0.015em" } }, b.value),
+                React.createElement("td", { style: { padding: "18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.muted, fontWeight: 500 } }, b.pct)
+              ))
+            )
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, margin: "24px 0" } }),
+          React.createElement(NarrativeBlock, { title: "Business Performance Read", accent: "buff" },
+            "Customer purchasing behaviour shows a mixed picture. ",
+            React.createElement("strong", { style: { color: C.green } }, "Average Order Count"),
+            " is the standout strength at 2 orders per customer (74th percentile, Good) — indicating healthy repeat purchase behaviour. However, ",
+            React.createElement("strong", { style: { color: C.green } }, "Average Cart Size"),
+            " (2.2 items, 35th percentile) and ",
+            React.createElement("strong", { style: { color: C.green } }, "Average Order Value"),
+            " ($69, 29th percentile) suggest customers are returning but not bundling or trading up per transaction. The most pressing concern is ",
+            React.createElement("strong", { style: { color: C.terracotta } }, "% of Orders Returned at 2.84% (17th percentile, Poor)"),
+            " — signalling potential issues around product fit, expectation setting, or post-purchase experience."
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Key Insights", subtitle: "What the April numbers tell us, and where to focus next." },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 } },
+          React.createElement(Card, { accent: C.pink },
+            React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 26, fontWeight: 500, color: C.green, marginBottom: 14, letterSpacing: "-0.01em" } }, "What's working"),
+            React.createElement("ul", { style: { listStyle: "none", padding: 0, margin: 0, fontFamily: "'Karla',sans-serif", fontSize: 13, lineHeight: 1.7, color: C.black } },
+              ["Total revenue lifted +2.77% MoM and +7.46% YoY, with growth tracking ahead of seasonal expectations.",
+               "Klaviyo contributed 40.66% of total revenue ($60,950 of $149,901) — a strong attribution share.",
+               "SMS subscribers grew +99.1% to 22,056 with a 100% delivery rate and a 34.62% click-to-order ratio.",
+               "Welcome Series flows posting 16.5% email CTR and 11.6% SMS conversion — rated Excellent against industry benchmarks.",
+               "Mother's Day '26 program (12 emails) delivered $24,002 — a +141.7% revenue lift vs the 4-email '25 program."
+              ].map((t, i) => React.createElement("li", { key: i, style: { paddingLeft: 18, position: "relative", marginBottom: 8 } },
+                React.createElement("span", { style: { position: "absolute", left: 0, top: 2, color: C.pink, fontSize: 14 } }, "♥"), t))
+            )
+          ),
+          React.createElement(Card, { accent: C.terracotta },
+            React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 26, fontWeight: 500, color: C.green, marginBottom: 14, letterSpacing: "-0.01em" } }, "What needs attention"),
+            React.createElement("ul", { style: { listStyle: "none", padding: 0, margin: 0, fontFamily: "'Karla',sans-serif", fontSize: 13, lineHeight: 1.7, color: C.black } },
+              ["Campaign open rate fell -30.2% YoY to 37.4% — audience grew +55.1% but engagement quality has softened.",
+               "% of Orders Returned sits at 2.84% (17th percentile, Poor) — flag for product-fit or expectation review.",
+               "Welcome Series spam report rate at 0.245% and Thank You flow unsubscribe rate at 1.13% — both rated Poor.",
+               "Abandoned Cart conversion rate at 0.452% (Poor) — highest-leverage flow for content and offer testing.",
+               "Flow recipients dropped -28.4% MoM — audience targeting tightened, but top-of-funnel reach needs rebuilding."
+              ].map((t, i) => React.createElement("li", { key: i, style: { paddingLeft: 18, position: "relative", marginBottom: 8 } },
+                React.createElement("span", { style: { position: "absolute", left: 0, top: 2, color: C.terracotta, fontSize: 14 } }, "♦"), t))
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Next Steps" },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 20 } },
+          [
+            { title: "Lift campaign engagement",
+              body: "Campaign open rate at 37.4% is down 30.2% YoY despite a 55% larger audience — growth is outpacing engagement strategy. A/B test subject lines on every send, re-segment to prioritise engaged subscribers (last 30/60 day openers), introduce send-time optimisation, and test plain-text variants against the current rich HTML." },
+            { title: "Improve deliverability through list hygiene",
+              body: "Unsubscribe and spam complaint rates can quietly impact long-term deliverability and inbox placement. Run a list-cleaning initiative by suppressing unengaged profiles (90–180 day non-openers), creating a sunset flow before suppression, and validating older contacts. This will help improve sender reputation, reduce spam risk, and ensure campaigns are reaching genuinely engaged subscribers more consistently." },
+            { title: "Scale SMS while protecting RPR",
+              body: "Subscribers are up +99.1% to 22,056, but RPR fell -34.2% to $2.12 — volume scaled faster than monetisation. Launch SMS campaigns (0 sent this month), activate the VIP SMS segment with early-access drops, and A/B test copy length and emoji density across the 22,056 subscriber base." },
+            { title: "Address the return rate",
+              body: "% of Orders Returned at 2.84% (17th percentile, Poor) is the most pressing business signal. Add sizing/fit guidance to post-purchase Email #1, survey returners on return reasons, test richer PDP content on highest-return SKUs, and build a 'returning shopper' flow with style guidance to improve repeat purchase confidence." }
+          ].map((r, i) => React.createElement(Card, { key: i, accent: C.pink },
+            React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 24, fontWeight: 500, color: C.green, marginBottom: 12, letterSpacing: "-0.01em" } }, r.title),
+            React.createElement("p", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, lineHeight: 1.7, color: C.black } }, r.body)
+          ))
+        )
+      )
+    );
+  }
+
+  /* ════════════════════ FLOWS TAB ════════════════════ */
+  function FlowsTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Klaviyo · automated flows",
+        title: "Flow Performance",
+        tagline: "Email and SMS flow metrics compared to last month and last year, top-performing flows by revenue, and metric-level performance against industry benchmarks."
+      }),
+
+      React.createElement(Section, { title: "Flow Performance Summary", subtitle: "April 2026 flow channel headline numbers." },
+        React.createElement(Card, { accent: C.green },
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 } },
+            React.createElement(HeroStat, { label: "Flow Revenue",      value: "$28,679.80" }),
+            React.createElement(HeroStat, { label: "Flow SMS Revenue",  value: "$6,198.24" }),
+            React.createElement(HeroStat, { label: "Combined",          value: "$34,878" }),
+            React.createElement(HeroStat, { label: "% of Attributed",   value: "57.2%" })
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Flow Metrics vs Previous Period", subtitle: "Month-on-month flow performance — engagement and revenue." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "April Value", "Rating · Delta"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 ? "left" : "right", padding: "0 0 14px", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              flowMetricsMoM.map((m, i) => React.createElement(MetricRow, {
+                key: i, metric: m.metric, value: m.value, delta: m.delta, neg: m.neg, rating: m.rating, last: i === flowMetricsMoM.length - 1
+              }))
+            )
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, margin: "24px 0" } }),
+          React.createElement(NarrativeBlock, { title: "Flow Performance — MoM Read", accent: "buff" },
+            React.createElement("strong", { style: { color: C.green } }, "Flow Performance: "),
+            "Month-on-month, flows reached 38,389 total recipients (-28.40%). Despite the notable drop in audience size, both click rate and placed order rate showed positive momentum — click rate climbed +7.92% to 3.98% (rated Good), and placed order rate jumped +26.00% to 0.54% (rated Poor), indicating stronger engagement and purchase intent from the smaller pool of recipients.",
+            React.createElement("br"), React.createElement("br"),
+            React.createElement("strong", { style: { color: C.green } }, "Flow Conversions: "),
+            "Flow-driven revenue totalled $28,679.80 (-2.38%) versus the previous period. The revenue dip is marginal given the sharp reduction in recipients, which reflects the strong gains in click and placed order rates softening the impact. With downstream conversion clearly improving, the opportunity lies in lifting open rate through subject line testing and send-time optimisation — recovering top-of-funnel engagement should translate directly into revenue growth, given how efficiently the current audience is converting."
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Flow Metrics vs Last Year", subtitle: "April 2025 vs April 2026 flow performance." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "April '26 Value", "Rating · Delta"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 ? "left" : "right", padding: "0 0 14px", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              flowMetricsYoY.map((m, i) => React.createElement(MetricRow, {
+                key: i, metric: m.metric, value: m.value, delta: m.delta, neg: m.neg, rating: m.rating, last: i === flowMetricsYoY.length - 1
+              }))
+            )
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, margin: "24px 0" } }),
+          React.createElement(NarrativeBlock, { title: "Flow Performance — YoY Read", accent: "buff" },
+            React.createElement("strong", { style: { color: C.green } }, "Flow Performance: "),
+            "Year-on-year, flows reached 56,002 total recipients (-10.62%). Engagement metrics declined across the board, with open rate down 4.07% (to 42.55%, rated Fair) and click rate down 20.20% (to 3.71%, rated Good). The placed order rate also fell sharply by 30.38% (to 0.42%, rated Poor), indicating that while the audience reduction was moderate, both engagement and conversion efficiency per recipient have softened meaningfully compared with the previous period.",
+            React.createElement("br"), React.createElement("br"),
+            React.createElement("strong", { style: { color: C.green } }, "Flow Conversions: "),
+            "Despite the softer engagement and order rates, flow-driven revenue showed a modest positive result of $33,227.42 (+3.99%) versus the previous period. This suggests that flows are continuing to generate incremental revenue growth even as per-recipient engagement declines. However, the significant drop in placed order rate highlights an opportunity to optimise flow content, calls-to-action, and post-click experience to better convert engaged recipients into buyers and sustain revenue momentum."
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Top Performing Flows", subtitle: "Highest-revenue flows for the reporting period — ranked by conversion value." },
+        React.createElement(Card, null,
+          React.createElement("div", { style: { overflowX: "auto" } },
+            React.createElement("table", { style: { width: "100%", minWidth: 880 } },
+              React.createElement("thead", null,
+                React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                  ["Flow", "Status", "Recipients", "Delivery", "Order Rate", "Revenue", "Rev/Recipient"].map((h, i) => React.createElement("th", {
+                    key: i,
+                    style: { textAlign: i === 0 ? "left" : "right", padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                  }, h))
+                )
+              ),
+              React.createElement("tbody", null,
+                topFlows.map((f, i) => React.createElement("tr", { key: i, style: { borderBottom: i < topFlows.length - 1 ? "1px solid " + C.divider : "none" } },
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 600, lineHeight: 1.4 } }, f.name),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right" } }, React.createElement(StatusPill, { status: f.status })),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black } }, f.recipients),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.muted } }, f.deliv),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 600 } }, f.order),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, f.revenue),
+                  React.createElement("td", { style: { padding: "18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.muted } }, f.rpr)
+                ))
+              )
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Metric Performance", subtitle: "Top and bottom performing metrics across all flows and campaigns, against Klaviyo industry benchmarks." },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 24 } },
+          React.createElement(Card, { accent: C.green },
+            React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 24, fontWeight: 500, color: C.green, marginBottom: 18, letterSpacing: "-0.01em" } }, "Top Performing Metrics"),
+            topMetrics.map((m, i) => React.createElement("div", { key: i, style: { padding: "14px 0", borderBottom: i < topMetrics.length - 1 ? "1px solid " + C.divider : "none" } },
+              React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 } },
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 600 } }, m.metric),
+                React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, m.value)
+              ),
+              React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, letterSpacing: "0.02em" } }, m.segment),
+                React.createElement(RatingPill, { rating: m.rating })
+              )
+            ))
+          ),
+          React.createElement(Card, { accent: C.terracotta },
+            React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 24, fontWeight: 500, color: C.green, marginBottom: 18, letterSpacing: "-0.01em" } }, "Bottom Performing Metrics"),
+            bottomMetrics.map((m, i) => React.createElement("div", { key: i, style: { padding: "14px 0", borderBottom: i < bottomMetrics.length - 1 ? "1px solid " + C.divider : "none" } },
+              React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "baseline", marginBottom: 4 } },
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 600 } }, m.metric),
+                React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, m.value)
+              ),
+              React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" } },
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, letterSpacing: "0.02em" } }, m.segment),
+                React.createElement(RatingPill, { rating: m.rating })
+              )
+            ))
+          )
+        ),
+        React.createElement(NarrativeBlock, { title: "Metric Performance Read", accent: "buff" },
+          React.createElement("strong", { style: { color: C.green } }, "Top performers: "),
+          "Engagement and deliverability are rated Excellent across the board. Welcome Series flows lead with email CTR at 15.8% and Browse Abandonment open rate at 69.9%. Bounce rates remain very low (Campaigns 0.0591%, Browse Abandonment 0.144%), reflecting well-targeted flows and clean list hygiene.",
+          React.createElement("br"), React.createElement("br"),
+          React.createElement("strong", { style: { color: C.green } }, "Areas to fix: "),
+          "Several metrics need attention. Spam Report Rates are elevated in Welcome Series (0.245%) and Thank You flows (0.0626%), campaign Open Rate is weak at 30%, Thank You flow Unsubscribe Rate is high at 1.13%, and Abandoned Cart Conversion Rate is just 0.452%. Priority focus should be on flow content, subject lines, and abandoned cart optimisation to recover lost revenue."
+        )
+      )
+    );
+  }
+
+  /* ════════════════════ CAMPAIGNS TAB ════════════════════ */
+  function CampaignsTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Klaviyo · email campaigns",
+        title: "Campaign Performance",
+        tagline: "Campaign metrics compared month-on-month and year-on-year — recipients, engagement, conversions, and revenue."
+      }),
+
+      React.createElement(Section, { title: "Campaign Performance Summary" },
+        React.createElement(Card, { accent: C.pink },
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 } },
+            React.createElement(HeroStat, { label: "Campaign Revenue",  value: "$32,270.01" }),
+            React.createElement(HeroStat, { label: "Total Recipients",  value: "1.23M" }),
+            React.createElement(HeroStat, { label: "Conversion Value",  value: "$32.3K" }),
+            React.createElement(HeroStat, { label: "AOV",               value: "$105" })
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Campaign Metrics vs Last Year", subtitle: "April 2025 vs April 2026 — recipients up sharply, engagement softening." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "April '26 Value", "Delta YoY"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 ? "left" : "right", padding: "0 0 14px", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              campaignMetricsYoY.map((m, i) => React.createElement(MetricRow, {
+                key: i, metric: m.metric, value: m.value, delta: m.delta, neg: m.neg, last: i === campaignMetricsYoY.length - 1
+              }))
+            )
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, margin: "24px 0" } }),
+          React.createElement(NarrativeBlock, { title: "Campaign Performance — YoY Read", accent: "buff" },
+            React.createElement("strong", { style: { color: C.green } }, "Campaign Performance: "),
+            "Year-on-year, campaigns reached 1.23M recipients (+55.1%) with unique opens up 8.2% (461K), but engagement efficiency declined — open rate down 30.2% (37.4%) and click rate down 35.3% (0.964%). Unique clicks were nearly flat at 11.9K (+0.4%), showing audience growth outpaced engagement quality.",
+            React.createElement("br"), React.createElement("br"),
+            React.createElement("strong", { style: { color: C.green } }, "Campaign Conversions: "),
+            "Conversion value grew 11.3% ($32.3K) and AOV rose 3.3% ($105), with unique conversions up 6.7% (302). However, conversion rate fell 33.3% (0.024%) and revenue per recipient dropped 28.2% ($0.0262). Revenue is up overall, but per-recipient efficiency has weakened — signalling a need to sharpen targeting and content."
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Campaign Metrics vs Last Period", subtitle: "March 2026 vs April 2026 — strong gains across every metric." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "April Value", "Delta MoM"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 ? "left" : "right", padding: "0 0 14px", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              campaignMetricsMoM.map((m, i) => React.createElement(MetricRow, {
+                key: i, metric: m.metric, value: m.value, delta: m.delta, neg: m.neg, last: i === campaignMetricsMoM.length - 1
+              }))
+            )
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, margin: "24px 0" } }),
+          React.createElement(NarrativeBlock, { title: "Campaign Performance — MoM Read", accent: "buff" },
+            "Month-on-month, campaigns scaled significantly: total recipients +30.3%, unique opens +59.3% (a notable engagement breakout), and open rate climbed +22.4% to 37.4%. Click rate ticked up +8.2%, unique clicks +40.9%, and conversion value grew +33.6% to $32.3K. AOV held strong at $105 (+1.9%) and RPR improved marginally (+2.6% to $0.0262). April was a meaningfully stronger sending month — the trend to protect into May."
+          )
+        )
+      )
+    );
+  }
+
+  /* ════════════════════ SMS TAB ════════════════════ */
+  function SMSTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Klaviyo · SMS channel",
+        title: "Text Message Performance",
+        tagline: "SMS revenue, deliverability, subscriber growth, and engagement detail — alongside industry benchmark ratings for the welcome and browse flows."
+      }),
+
+      React.createElement(Section, { title: "SMS Headline Performance" },
+        React.createElement(Card, { accent: C.pink },
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28, marginBottom: 28 } },
+            React.createElement(HeroStat, { label: "Text Message Revenue", value: smsKpis.revenue.value,     delta: smsKpis.revenue.delta }),
+            React.createElement(HeroStat, { label: "Text Message Deliveries", value: smsKpis.deliveries.value, delta: smsKpis.deliveries.delta }),
+            React.createElement(HeroStat, { label: "Subscribers",            value: smsKpis.subscribers.value, delta: smsKpis.subscribers.delta })
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, marginBottom: 28 } }),
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 24 } },
+            React.createElement(SmallStat, { label: "New Subscribers",  value: smsKpis.newSubs.value,  delta: smsKpis.newSubs.delta, neg: true }),
+            React.createElement(SmallStat, { label: "Excluded Profiles", value: smsKpis.excluded.value, delta: smsKpis.excluded.delta, neg: true }),
+            React.createElement(SmallStat, { label: "Revenue / Recipient", value: smsKpis.rpr.value, delta: smsKpis.rpr.delta, neg: true }),
+            React.createElement(SmallStat, { label: "Total Flows Sent", value: "9", sub: "0 campaigns sent" })
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Engagement & Conversion", subtitle: "Deliverability and downstream conversion across the 2,919 deliveries." },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 16, marginBottom: 16 } },
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Delivery Rate", value: smsKpis.deliveryRate.value, sub: smsKpis.deliveryRate.sub })),
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Click Rate", value: smsKpis.clickRate.value, sub: smsKpis.clickRate.sub })),
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Placed Order Rate", value: smsKpis.orderRate.value, sub: smsKpis.orderRate.sub })),
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Click to Order", value: smsKpis.clickToOrder.value, delta: smsKpis.clickToOrder.delta }))
+        ),
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16 } },
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Average Order Value", value: smsKpis.aov.value, delta: smsKpis.aov.delta })),
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Unsubscribe Rate", value: smsKpis.unsubRate.value, delta: smsKpis.unsubRate.delta, sub: smsKpis.unsubRate.sub })),
+          React.createElement(Card, null,
+            React.createElement(SmallStat, { label: "Failed to Deliver", value: smsKpis.failedRate.value, delta: smsKpis.failedRate.delta, sub: smsKpis.failedRate.sub }))
+        ),
+        React.createElement("div", { style: { marginTop: 24 } },
+          React.createElement(NarrativeBlock, { title: "SMS Performance Read", accent: "buff" },
+            React.createElement("strong", { style: { color: C.green } }, "Volume & Subscribers: "),
+            "Text Message channel delivered $6,198 in attributed revenue (+5.4%) from 2,919 deliveries (+60.2%), entirely flow-driven across 9 flows with no campaigns sent. Revenue per recipient dipped to $2.12 (-34.2%), indicating that while volume scaled significantly, per-recipient value softened. The subscriber base grew strongly to 22,056 (+99.1%), though new subscriber acquisition slowed (-56.2%, 569 added), and excluded profiles rose to 241 (+92.8%).",
+            React.createElement("br"), React.createElement("br"),
+            React.createElement("strong", { style: { color: C.green } }, "Engagement & Conversions: "),
+            "Deliverability was flawless at 100% (2,919 deliveries) with click rate at 6% (231 clicks) and placed order rate at 2% (63 orders). Click-to-order conversion was particularly strong at 34.62% (+53.5%), and AOV held steady at $98.38 (+0.4%). Unsubscribe rate improved to 1.44% (-43.0%) and failed deliveries dropped to 0.55% (-9.0%) — reflecting healthy list quality and engaged audiences converting efficiently once clicked through."
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "SMS Industry Benchmarks", subtitle: "Top-performing metrics for April 2026, rated against Klaviyo industry benchmarks." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "Segment", "Rating", "Your Value"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 || i === 1 ? "left" : (i === 2 ? "center" : "right"), padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              smsBenchmarks.map((b, i) => React.createElement("tr", { key: i, style: { borderBottom: i < smsBenchmarks.length - 1 ? "1px solid " + C.divider : "none" } },
+                React.createElement("td", { style: { padding: "16px 12px 16px 0", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 600 } }, b.metric),
+                React.createElement("td", { style: { padding: "16px 12px 16px 0", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.muted } }, b.segment),
+                React.createElement("td", { style: { padding: "16px 12px 16px 0", textAlign: "center" } }, React.createElement(RatingPill, { rating: b.rating })),
+                React.createElement("td", { style: { padding: "16px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, fontWeight: 500, color: C.green, letterSpacing: "-0.015em" } }, b.value)
+              ))
+            )
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, margin: "24px 0" } }),
+          React.createElement(NarrativeBlock, { title: "Benchmarks Read", accent: "buff" },
+            "Performance across key engagement and deliverability metrics is rated Excellent. Welcome Series flows lead the way, with Text Message conversion rate at 11.6% and Email click-through rate at 16.5%, reflecting strong audience receptiveness at the top of the funnel. Deliverability health is also robust, with Browse Abandonment flow bounce rate at just 0.0808% and campaign-level bounce rate at 0.125%, while unsubscribe rate sits at a healthy 0.128%. Overall, these results indicate well-targeted flows, clean list hygiene, and engaging content driving best-in-class performance."
+          )
+        )
+      )
+    );
+  }
+
+  /* ════════════════════ A/B TESTS TAB ════════════════════ */
+  function ABTestsTab() {
+    const flowAWins = abTests.filter(t => t.winner === "Flow A").length;
+    const flowBWins = abTests.filter(t => t.winner === "Flow B").length;
+
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Klaviyo · flow A/B testing",
+        title: "A/B Testing Results",
+        tagline: "Seven flows tested across welcome, abandonment, post-purchase and cross-sell — winners, win-rationales, and side-by-side variant performance."
+      }),
+
+      React.createElement(Section, { title: "Testing Overview & Approach" },
+        React.createElement(Card, null,
+          React.createElement("p", { style: { fontFamily: "'Karla',sans-serif", fontSize: 14, lineHeight: 1.75, color: C.black, marginBottom: 14 } },
+            "We conducted multiple A/B tests across various email flows to optimise engagement and conversions. Each flow includes several emails tested with different subject lines, content, or timing variations. Win probabilities are calculated for each test, helping us identify the most effective versions. These insights guide our continuous improvement — ensuring we deliver the best experience to customers while maximising ROI."),
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20, marginTop: 24 } },
+            React.createElement("div", { style: { padding: 24, background: C.pinkSoft, borderRadius: 4, textAlign: "center" } },
+              React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 56, fontWeight: 500, color: C.green, lineHeight: 1, marginBottom: 6 } }, abTests.length),
+              React.createElement(StatLabel, null, "Flows Tested")
+            ),
+            React.createElement("div", { style: { padding: 24, background: C.buff, borderRadius: 4, textAlign: "center" } },
+              React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 56, fontWeight: 500, color: C.green, lineHeight: 1, marginBottom: 6 } }, flowAWins),
+              React.createElement(StatLabel, null, "Flow A Wins")
+            ),
+            React.createElement("div", { style: { padding: 24, background: C.terraSoft, borderRadius: 4, textAlign: "center" } },
+              React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 56, fontWeight: 500, color: C.green, lineHeight: 1, marginBottom: 6 } }, flowBWins),
+              React.createElement(StatLabel, null, "Flow B Wins")
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Winners Summary", subtitle: "Quick reference table of every A/B test and its winning variant." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["#", "Flow Name", "Winner", "Reason"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: "left", padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              abTests.map((t, i) => React.createElement("tr", { key: i, style: { borderBottom: i < abTests.length - 1 ? "1px solid " + C.divider : "none" } },
+                React.createElement("td", { style: { padding: "16px 12px 16px 0", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.pink, fontWeight: 500, width: 40 } }, "0" + (i + 1)),
+                React.createElement("td", { style: { padding: "16px 12px 16px 0", fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, fontWeight: 600 } }, t.name),
+                React.createElement("td", { style: { padding: "16px 12px 16px 0", width: 100 } },
+                  React.createElement("span", { style: { display: "inline-block", padding: "5px 14px", borderRadius: 100, background: C.pink, color: C.green, fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, letterSpacing: "0.06em", textTransform: "uppercase" } }, t.winner)
+                ),
+                React.createElement("td", { style: { padding: "16px 0", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.muted, lineHeight: 1.5 } }, t.reason)
+              ))
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Test-by-Test Breakdown", subtitle: "Detailed performance comparison for each flow — winning variant highlighted." },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr", gap: 20 } },
+          abTests.map((t, i) => {
+            const winA = t.winner === "Flow A";
+            return React.createElement(Card, { key: i, accent: C.pink },
+              React.createElement("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 24, marginBottom: 18, flexWrap: "wrap" } },
+                React.createElement("div", null,
+                  React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.terracotta, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8 } }, "Test " + (i + 1) + " of " + abTests.length),
+                  React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 28, fontWeight: 500, color: C.green, letterSpacing: "-0.01em", lineHeight: 1.1 } }, t.name)
+                ),
+                React.createElement("div", { style: { textAlign: "right", flexShrink: 0 } },
+                  React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.2em", textTransform: "uppercase", marginBottom: 8 } }, "Overall Winner"),
+                  React.createElement("div", { style: { display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 20px", borderRadius: 100, background: C.green, color: C.pink, fontFamily: "'Karla',sans-serif", fontSize: 14, fontWeight: 700, letterSpacing: "0.04em" } },
+                    React.createElement("span", { style: { color: C.pink } }, "♥"),
+                    t.winner
+                  )
+                )
+              ),
+              React.createElement("p", { style: { fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, lineHeight: 1.7, fontWeight: 600, marginBottom: 12 } }, t.reason),
+              React.createElement("p", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.muted, lineHeight: 1.7, marginBottom: 20 } }, t.detail),
+              React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 } },
+                React.createElement("div", {
+                  style: {
+                    padding: 18,
+                    background: winA ? C.pinkSoft : C.bg,
+                    borderRadius: 4,
+                    border: winA ? "2px solid " + C.pink : "1px solid " + C.divider,
+                    position: "relative"
+                  }
+                },
+                  winA && React.createElement("div", { style: { position: "absolute", top: -10, right: 14, background: C.green, color: C.pink, fontFamily: "'Karla',sans-serif", fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", padding: "3px 10px", borderRadius: 100 } }, "✓ Winner"),
+                  React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, color: winA ? C.green : C.muted, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: 8 } }, "Flow A"),
+                  React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, lineHeight: 1.6 } }, t.flowA)
+                ),
+                React.createElement("div", {
+                  style: {
+                    padding: 18,
+                    background: !winA ? C.pinkSoft : C.bg,
+                    borderRadius: 4,
+                    border: !winA ? "2px solid " + C.pink : "1px solid " + C.divider,
+                    position: "relative"
+                  }
+                },
+                  !winA && React.createElement("div", { style: { position: "absolute", top: -10, right: 14, background: C.green, color: C.pink, fontFamily: "'Karla',sans-serif", fontSize: 9, fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", padding: "3px 10px", borderRadius: 100 } }, "✓ Winner"),
+                  React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, fontWeight: 700, color: !winA ? C.green : C.muted, letterSpacing: "0.16em", textTransform: "uppercase", marginBottom: 8 } }, "Flow B"),
+                  React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 13, color: C.black, lineHeight: 1.6 } }, t.flowB)
+                )
+              )
+            );
+          })
+        )
+      ),
+
+      React.createElement(Section, { title: "Optimisation Strategy" },
+        React.createElement(Card, { dark: true },
+          React.createElement("h3", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 28, fontWeight: 500, color: C.pink, marginBottom: 16, letterSpacing: "-0.01em" } }, "Next Steps"),
+          React.createElement("ul", { style: { listStyle: "none", padding: 0, margin: 0, fontFamily: "'Karla',sans-serif", fontSize: 14, lineHeight: 1.8, color: C.white } },
+            ["Add profile filters to exclude users who have already taken action (e.g. purchased or used a coupon) so they stop receiving further emails in the series.",
+             "Apply the approved mobile and desktop designs across all touchpoints to ensure a consistent, brand-aligned experience.",
+             "Roll winning variants live with a 30-day monitoring period; re-test quarterly with fresh creative.",
+             "Prioritise the Abandoned Cart Flow B winner — the largest revenue gap of any test (4× revenue uplift)."
+            ].map((t, i) => React.createElement("li", { key: i, style: { paddingLeft: 22, position: "relative", marginBottom: 10 } },
+              React.createElement("span", { style: { position: "absolute", left: 0, top: 0, color: C.pink, fontSize: 16 } }, "♥"), t))
+          )
+        )
+      )
+    );
+  }
+
+  /* ════════════════════ MOTHER'S DAY TAB ════════════════════ */
+  function MothersDayTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Klaviyo · seasonal campaign",
+        title: "Mother's Day Campaigns",
+        tagline: "Year-on-year comparison of the Mother's Day program — 12 emails in 2026 delivering $24,002, vs 4 emails in 2025 at $9,931. A breakdown of every send."
+      }),
+
+      React.createElement(Section, { title: "Year-on-Year Comparison" },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 } },
+          React.createElement(Card, { accent: C.pink },
+            React.createElement(StatLabel, null, "Mother's Day 2026"),
+            React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 24, marginTop: 14 } },
+              React.createElement("div", null,
+                React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 46, fontWeight: 500, color: C.green, lineHeight: 1, letterSpacing: "-0.02em" } }, audD(24002.53)),
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, marginTop: 6, letterSpacing: "0.08em", textTransform: "uppercase" } }, "Total revenue")
+              ),
+              React.createElement("div", null,
+                React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 36, fontWeight: 500, color: C.green, lineHeight: 1 } }, "12"),
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, marginTop: 6, letterSpacing: "0.08em", textTransform: "uppercase" } }, "Total emails")
+              )
+            ),
+            React.createElement("div", { style: { marginTop: 20, display: "inline-block", padding: "8px 16px", background: C.greenSoft, borderRadius: 100, fontFamily: "'Karla',sans-serif", fontSize: 12, fontWeight: 700, color: C.green, letterSpacing: "0.06em" } },
+              "▲ 141.7% revenue  ·  +200% sends vs 2025")
+          ),
+          React.createElement(Card, null,
+            React.createElement(StatLabel, null, "Mother's Day 2025 — Baseline"),
+            React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 24, marginTop: 14 } },
+              React.createElement("div", null,
+                React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 46, fontWeight: 500, color: C.ghost, lineHeight: 1, letterSpacing: "-0.02em" } }, audD(9930.81)),
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, marginTop: 6, letterSpacing: "0.08em", textTransform: "uppercase" } }, "Total revenue")
+              ),
+              React.createElement("div", null,
+                React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 36, fontWeight: 500, color: C.ghost, lineHeight: 1 } }, "4"),
+                React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, marginTop: 6, letterSpacing: "0.08em", textTransform: "uppercase" } }, "Total emails")
+              )
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "2026 Campaign Breakdown", subtitle: "Every send across the Mother's Day program, ranked by date." },
+        React.createElement(Card, null,
+          React.createElement("div", { style: { overflowX: "auto" } },
+            React.createElement("table", { style: { width: "100%", minWidth: 720 } },
+              React.createElement("thead", null,
+                React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                  ["Date", "Time", "Campaign", "Subject Line", "Revenue"].map((h, i) => React.createElement("th", {
+                    key: i,
+                    style: { textAlign: i === 4 ? "right" : "left", padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                  }, h))
+                )
+              ),
+              React.createElement("tbody", null,
+                mothersDayCampaigns.map((c, i) => React.createElement("tr", { key: i, style: { borderBottom: i < mothersDayCampaigns.length - 1 ? "1px solid " + C.divider : "none" } },
+                  React.createElement("td", { style: { padding: "14px 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.black, whiteSpace: "nowrap", fontWeight: 600 } }, c.date),
+                  React.createElement("td", { style: { padding: "14px 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.muted, whiteSpace: "nowrap" } }, c.time),
+                  React.createElement("td", { style: { padding: "14px 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.black, fontWeight: 500 } }, c.name),
+                  React.createElement("td", { style: { padding: "14px 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 12, color: C.muted, fontStyle: "normal" } }, c.subject),
+                  React.createElement("td", { style: { padding: "14px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 18, color: C.green, fontWeight: 500, letterSpacing: "-0.01em" } }, audD(c.value))
+                ))
+              )
+            )
+          )
+        )
+      ),
+
+      React.createElement(NarrativeBlock, { title: "Mother's Day Read", accent: "pink" },
+        "The 2026 Mother's Day program tripled in size from 2025 (12 emails vs 4) and delivered 2.4× the revenue ($24,002 vs $9,931). The two strongest performers were the early-window sends — the Pre-sale ($5,137) and the Pre-sale clone ($4,595) — confirming that the most engaged customers convert before the headline sale lands. The four sale-week emails averaged $2,532 each, while pre-window content (Gift Guide, Wishlist, Outfit Inspo) seeded the audience with style cues before the offer arrived. The pattern to repeat: front-load with curated content, anchor with a VIP early-access send, then sustain with sale-cadence pushes."
+      )
+    );
+  }
+
+  /* ════════════════════ YOTPO: LOYALTY TAB ════════════════════ */
+  function LoyaltyTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Yotpo · loyalty program",
+        title: "Loyalty Performance",
+        tagline: "Loyalty program participation, redeemer vs non-redeemer behaviour, and the revenue lift from points-engaged customers in April 2026."
+      }),
+
+      React.createElement(Section, { title: "Loyalty Performance Headline" },
+        React.createElement(Card, { accent: C.pink },
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 28 } },
+            React.createElement(HeroStat, { label: "Redeeming Customers",        value: yotpoLoyalty.headline.redeemingCustomers }),
+            React.createElement(HeroStat, { label: "Participation Rate",         value: yotpoLoyalty.headline.participationRate }),
+            React.createElement(HeroStat, { label: "Added Revenue / Customer",   value: yotpoLoyalty.headline.addedRevPerCust }),
+            React.createElement(HeroStat, { label: "Added Revenue",              value: yotpoLoyalty.headline.addedRevenue })
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Redeemers vs Non-Redeemers", subtitle: "How loyalty-engaged customers compare on key purchase behaviours." },
+        React.createElement(Card, null,
+          React.createElement("table", { style: { width: "100%" } },
+            React.createElement("thead", null,
+              React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                ["Metric", "Redeemers", "Non-Redeemers", "Lift"].map((h, i) => React.createElement("th", {
+                  key: i,
+                  style: { textAlign: i === 0 ? "left" : "right", padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                }, h))
+              )
+            ),
+            React.createElement("tbody", null,
+              yotpoLoyalty.redeemerVsNon.map((m, i) => {
+                const parseN = v => parseFloat(String(v).replace(/[$,%]/g, ""));
+                const r = parseN(m.red), n = parseN(m.non);
+                const lift = n > 0 ? ((r - n) / n * 100) : null;
+                return React.createElement("tr", { key: i, style: { borderBottom: i < yotpoLoyalty.redeemerVsNon.length - 1 ? "1px solid " + C.divider : "none" } },
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, fontWeight: 600 } }, m.metric),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 24, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, m.red),
+                  React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.ghost, fontWeight: 500, letterSpacing: "-0.015em" } }, m.non),
+                  React.createElement("td", { style: { padding: "18px 0", textAlign: "right" } },
+                    lift !== null && React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 12, fontWeight: 700, color: C.green, letterSpacing: "0.04em" } }, "▲ " + Math.abs(lift).toFixed(0) + "%")
+                  )
+                );
+              })
+            )
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Customer Overview", subtitle: "Total customer counts, orders and revenue split by loyalty redemption." },
+        React.createElement(Card, null,
+          React.createElement("div", { style: { overflowX: "auto" } },
+            React.createElement("table", { style: { width: "100%", minWidth: 720 } },
+              React.createElement("thead", null,
+                React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                  ["Group", "Total Customers", "Total Orders", "Total Revenue", "Repeat Purchases", "Avg Purchases"].map((h, i) => React.createElement("th", {
+                    key: i,
+                    style: { textAlign: i === 0 ? "left" : "right", padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                  }, h))
+                )
+              ),
+              React.createElement("tbody", null,
+                yotpoLoyalty.overview.map((o, i) => {
+                  const isTotal = o.group === "Total";
+                  return React.createElement("tr", { key: i, style: { borderBottom: i < yotpoLoyalty.overview.length - 1 ? "1px solid " + C.divider : "none", background: isTotal ? C.bg : "transparent" } },
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, fontWeight: isTotal ? 700 : 600 } }, o.group),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, o.customers.toLocaleString()),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, o.orders.toLocaleString()),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, o.revenue),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black } }, o.repeat),
+                    React.createElement("td", { style: { padding: "18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black } }, o.avg)
+                  );
+                })
+              )
+            )
+          )
+        )
+      ),
+
+      React.createElement(NarrativeBlock, { title: "Loyalty Read", accent: "pink" },
+        "Loyalty redeemers are punching well above their weight. Only 7.6% of the customer base (100 of 1,324) redeemed in April, yet they delivered ",
+        React.createElement("strong", { style: { color: C.green } }, "12% of total revenue ($16,659 of $139,490)"),
+        ". Redeemers placed 1.63 average purchases vs 1.09 for non-redeemers (a 50% lift), drove $167 average revenue per customer vs $100 (+67%), and posted a 38% repeat purchase rate vs 7% (5.4× higher). AOV is also stronger at $102 vs $92. The loyalty program is doing its job — the opportunity is widening the funnel by lifting participation rate beyond 7.6%."
+      )
+    );
+  }
+
+  /* ════════════════════ YOTPO: VIP TIERS TAB ════════════════════ */
+  function VipTiersTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Yotpo · VIP tiers",
+        title: "VIP Tiers Dashboard",
+        tagline: "Tier distribution across the loyalty base, purchasing and redeeming customers in tiers, and tier-driven revenue for April 2026."
+      }),
+
+      React.createElement(Section, { title: "VIP Tier Headline" },
+        React.createElement(Card, { accent: C.pink },
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 28, marginBottom: 28 } },
+            React.createElement(HeroStat, { label: "Customers in Tiers",  value: yotpoVipTiers.headline.customersInTiers }),
+            React.createElement(HeroStat, { label: "Purchasing Customers", value: yotpoVipTiers.headline.purchasingCustomers }),
+            React.createElement(HeroStat, { label: "Redeeming Customers", value: yotpoVipTiers.headline.redeemingCustomers })
+          ),
+          React.createElement("div", { style: { height: 1, background: C.divider, marginBottom: 28 } }),
+          React.createElement("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: 28 } },
+            React.createElement(HeroStat, { label: "Avg Revenue Per Customer", value: yotpoVipTiers.headline.avgRevPerCust }),
+            React.createElement(HeroStat, { label: "Revenue from Tiers",       value: yotpoVipTiers.headline.revenueFromTiers })
+          )
+        )
+      ),
+
+      React.createElement(Section, { title: "Customer Progress in Tiers", subtitle: "Total customers per tier, plus April activity — new, retained, upgraded, and dropped." },
+        React.createElement(Card, null,
+          React.createElement("div", { style: { overflowX: "auto" } },
+            React.createElement("table", { style: { width: "100%", minWidth: 760 } },
+              React.createElement("thead", null,
+                React.createElement("tr", { style: { borderBottom: "1px solid " + C.divider } },
+                  ["Tier", "Total", "New", "Retained", "Upgraded", "Dropped"].map((h, i) => React.createElement("th", {
+                    key: i,
+                    style: { textAlign: i === 0 ? "left" : "right", padding: "0 12px 14px 0", fontFamily: "'Karla',sans-serif", fontSize: 10, fontWeight: 700, color: C.muted, letterSpacing: "0.14em", textTransform: "uppercase" }
+                  }, h))
+                )
+              ),
+              React.createElement("tbody", null,
+                yotpoVipTiers.tiers.map((t, i) => {
+                  // Tier color accent based on rarity
+                  const accents = [C.pink, C.terracotta, C.green, C.buff, C.ghost];
+                  return React.createElement("tr", { key: i, style: { borderBottom: i < yotpoVipTiers.tiers.length - 1 ? "1px solid " + C.divider : "none" } },
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, fontWeight: 700 } },
+                      React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12 } },
+                        React.createElement("div", { style: { width: 8, height: 28, background: accents[i % accents.length], borderRadius: 2 } }),
+                        t.name
+                      )
+                    ),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Bodoni Moda',serif", fontSize: 22, color: C.green, fontWeight: 500, letterSpacing: "-0.015em" } }, t.total.toLocaleString()),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, fontWeight: 500 } }, t.newC),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.black, fontWeight: 500 } }, t.retained),
+                    React.createElement("td", { style: { padding: "18px 12px 18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 14, color: C.green, fontWeight: 600 } }, t.upgraded),
+                    React.createElement("td", { style: { padding: "18px 0", textAlign: "right", fontFamily: "'Karla',sans-serif", fontSize: 14, color: t.dropped > 10 ? C.terracotta : C.muted, fontWeight: t.dropped > 10 ? 700 : 500 } }, t.dropped)
+                  );
+                })
+              )
+            )
+          )
+        )
+      ),
+
+      React.createElement(NarrativeBlock, { title: "VIP Tiers Read", accent: "pink" },
+        "The tier base is heavily concentrated in Curator (43,289 — 98.5% of all tiered customers), with progressively smaller cohorts in Trendsetter (474), Style Icon (144), Visionary (91), and Courture Queen (53). April saw ",
+        React.createElement("strong", { style: { color: C.green } }, "1,014 new customers"),
+        " enter tiers (largely into Curator at 951) and ",
+        React.createElement("strong", { style: { color: C.green } }, "63 upgrades"),
+        " up the ladder — including 44 promotions to Curator and 10 to Trendsetter. The notable warning sign is the ",
+        React.createElement("strong", { style: { color: C.terracotta } }, "35 Trendsetter drops"),
+        " — the middle tier is the leakiest. Tier-attributable revenue reached $107,194 across 977 purchasing customers, with $110 average revenue per customer."
+      )
+    );
+  }
+
+  /* ════════════════════ YOTPO: REVIEWS TAB ════════════════════ */
+  function ReviewsTab() {
+    return React.createElement("div", null,
+      React.createElement(PageHeader, {
+        eyebrow: "Yotpo · reviews",
+        title: "Reviews Performance",
+        tagline: "Review volume, average star rating, and order-to-review conversion for April 2026 — alongside all-time benchmarks."
+      }),
+
+      React.createElement(Section, { title: "Reviews Headline" },
+        React.createElement("div", { style: { display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 } },
+          React.createElement(Card, { accent: C.pink },
+            React.createElement(StatLabel, null, "Reviews Collected"),
+            React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 56, fontWeight: 500, color: C.green, lineHeight: 1, letterSpacing: "-0.025em", marginBottom: 12 } }, yotpoReviews.reviews.value),
+            React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" } },
+              React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 12, fontWeight: 700, color: C.green, letterSpacing: "0.04em" } }, "▲ " + yotpoReviews.reviews.delta + "%"),
+              React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, letterSpacing: "0.06em" } }, "All-time: " + yotpoReviews.reviews.allTime)
+            )
+          ),
+          React.createElement(Card, { accent: C.pink },
+            React.createElement(StatLabel, null, "Average Star Rating"),
+            React.createElement("div", { style: { display: "flex", alignItems: "baseline", gap: 10, marginBottom: 12 } },
+              React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 56, fontWeight: 500, color: C.green, lineHeight: 1, letterSpacing: "-0.025em" } }, yotpoReviews.avgStarRating.value),
+              React.createElement("span", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 28, color: C.pink } }, "★")
+            ),
+            React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" } },
+              React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 12, fontWeight: 700, color: C.terracotta, letterSpacing: "0.04em" } }, "▼ " + Math.abs(yotpoReviews.avgStarRating.delta) + "%"),
+              React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, letterSpacing: "0.06em" } }, "All-time: " + yotpoReviews.avgStarRating.allTime)
+            )
+          ),
+          React.createElement(Card, { accent: C.pink },
+            React.createElement(StatLabel, null, "Order to Review Rate"),
+            React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", fontSize: 56, fontWeight: 500, color: C.green, lineHeight: 1, letterSpacing: "-0.025em", marginBottom: 12 } }, yotpoReviews.orderToReview.value),
+            React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14, flexWrap: "wrap" } },
+              React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 12, fontWeight: 700, color: C.terracotta, letterSpacing: "0.04em" } }, "▼ " + Math.abs(yotpoReviews.orderToReview.delta) + "%"),
+              React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 11, color: C.muted, letterSpacing: "0.06em" } }, "All-time: " + yotpoReviews.orderToReview.allTime)
+            )
+          )
+        )
+      ),
+
+      React.createElement(NarrativeBlock, { title: "Reviews Read", accent: "pink" },
+        "April delivered a ",
+        React.createElement("strong", { style: { color: C.green } }, "+60% lift in review volume"),
+        " to 156 collected — a strong outcome for a low-volume month. However, both quality signals softened: average star rating dipped 0.2% to 4.58 (vs all-time 4.68), and order-to-review conversion fell 11.1% to 5.85% (vs all-time 4.91% — interestingly higher in April than the all-time baseline, suggesting the review request engine is working harder than usual). The pattern suggests stronger volume coming from less-than-perfect experiences. Priority: investigate the cohort behind the rating dip, and feed product/fit signals to the team given the parallel 2.84% return rate flagged in Klaviyo business metrics."
+      )
+    );
+  }
+
+  /* ════════════════════ ROOT DASHBOARD ════════════════════ */
+  const TABS = [
+    { id: "overview",  label: "Overview",      group: "Klaviyo" },
+    { id: "flows",     label: "Flows",         group: "Klaviyo" },
+    { id: "campaigns", label: "Campaigns",     group: "Klaviyo" },
+    { id: "sms",       label: "SMS",           group: "Klaviyo" },
+    { id: "abtests",   label: "A/B Tests",     group: "Klaviyo" },
+    { id: "mothers",   label: "Mother's Day",  group: "Klaviyo" },
+    { id: "loyalty",   label: "Loyalty",       group: "Yotpo" },
+    { id: "viptiers",  label: "VIP Tiers",     group: "Yotpo" },
+    { id: "reviews",   label: "Reviews",       group: "Yotpo" }
+  ];
+
+  function Dashboard() {
+    const [active, setActive] = useState("overview");
+    const activeTab = TABS.find(t => t.id === active);
+
+    return React.createElement("div", {
+      style: { fontFamily: "'Karla',sans-serif", background: C.bg, minHeight: "100vh", color: C.black }
+    },
+      /* Top bar — dark green with logo, pink heart accent */
+      React.createElement("div", {
+        style: {
+          background: C.green,
+          padding: "26px 48px",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          minHeight: 110,
+          position: "relative",
+          overflow: "hidden"
+        }
+      },
+        React.createElement("div", { style: { position: "absolute", top: -30, right: -30, width: 140, height: 140, borderRadius: "50%", background: C.pink, opacity: 0.18 } }),
+        React.createElement("div", { style: { position: "absolute", bottom: -40, right: 140, width: 90, height: 90, borderRadius: "50%", background: C.terracotta, opacity: 0.2 } }),
+        React.createElement("div", { style: { position: "relative", zIndex: 1 } },
+          React.createElement(FemmeLogo, { height: 72 })
+        ),
+        React.createElement("div", { style: { textAlign: "right", position: "relative", zIndex: 1 } },
+          React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", color: "rgba(255,255,255,0.6)", fontSize: 10, fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", marginBottom: 8 } }, "Performance Report · Klaviyo + Yotpo"),
+          React.createElement("div", { style: { fontFamily: "'Bodoni Moda',serif", color: C.pink, fontSize: 32, fontWeight: 500, letterSpacing: "-0.01em", lineHeight: 1 } }, "April 2026")
+        )
+      ),
+
+      /* Tab nav with group labels */
+      React.createElement("div", {
+        style: {
+          background: C.white,
+          borderBottom: "1px solid " + C.border,
+          padding: "0 48px",
+          position: "sticky",
+          top: 0,
+          zIndex: 10
+        }
+      },
+        React.createElement("div", {
+          style: { display: "flex", gap: 4, overflowX: "auto", alignItems: "stretch" }
+        },
+          TABS.map((t, i) => {
+            const on = active === t.id;
+            const prevGroup = i > 0 ? TABS[i - 1].group : null;
+            const showGroupDivider = prevGroup && prevGroup !== t.group;
+            return React.createElement(React.Fragment, { key: t.id },
+              showGroupDivider && React.createElement("div", { style: { width: 1, alignSelf: "center", height: 28, background: C.border, margin: "0 8px" } }),
+              React.createElement("button", {
+                onClick: () => setActive(t.id),
+                style: {
+                  background: "transparent",
+                  border: "none",
+                  borderBottom: on ? "3px solid " + C.pink : "3px solid transparent",
+                  padding: "20px 18px",
+                  fontFamily: "'Karla',sans-serif",
+                  fontSize: 12,
+                  fontWeight: on ? 700 : 500,
+                  color: on ? C.green : C.muted,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                  transition: "all 0.15s",
+                  whiteSpace: "nowrap"
+                }
+              },
+                React.createElement("span", { style: { fontFamily: "'Karla',sans-serif", fontSize: 9, color: on ? C.terracotta : C.ghost, marginRight: 8, letterSpacing: "0.18em" } }, t.group),
+                t.label
+              )
+            );
+          })
+        )
+      ),
+
+      /* Content */
+      React.createElement("div", {
+        style: { padding: "44px 48px", maxWidth: 1400, margin: "0 auto" }
+      },
+        active === "overview"  && React.createElement(OverviewTab, null),
+        active === "flows"     && React.createElement(FlowsTab, null),
+        active === "campaigns" && React.createElement(CampaignsTab, null),
+        active === "sms"       && React.createElement(SMSTab, null),
+        active === "abtests"   && React.createElement(ABTestsTab, null),
+        active === "mothers"   && React.createElement(MothersDayTab, null),
+        active === "loyalty"   && React.createElement(LoyaltyTab, null),
+        active === "viptiers"  && React.createElement(VipTiersTab, null),
+        active === "reviews"   && React.createElement(ReviewsTab, null)
+      ),
+
+      /* Footer — clean, brand-aligned */
+      React.createElement("div", {
+        style: {
+          background: C.green,
+          padding: "36px 48px",
+          marginTop: 40,
+          position: "relative",
+          overflow: "hidden"
+        }
+      },
+        React.createElement("div", { style: { position: "absolute", top: -20, left: -20, width: 100, height: 100, borderRadius: "50%", background: C.pink, opacity: 0.12 } }),
+        React.createElement("div", { style: { position: "absolute", bottom: -30, right: 80, width: 80, height: 80, borderRadius: "50%", background: C.buff, opacity: 0.18 } }),
+        React.createElement("div", {
+          style: { display: "flex", justifyContent: "space-between", alignItems: "center", maxWidth: 1400, margin: "0 auto", flexWrap: "wrap", gap: 20, position: "relative", zIndex: 1 }
+        },
+          React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 16 } },
+            React.createElement(FemmeLogo, { height: 42 })
+          ),
+          React.createElement("div", { style: { textAlign: "right" } },
+            React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 10, color: "rgba(255,255,255,0.5)", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 700, marginBottom: 4 } }, "April 2026 Performance Report"),
+            React.createElement("div", { style: { fontFamily: "'Karla',sans-serif", fontSize: 10, color: "rgba(255,255,255,0.4)", letterSpacing: "0.16em", textTransform: "uppercase" } }, "Confidential")
+          )
+        )
+      )
+    );
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    React.createElement(Dashboard)
+  );
+})();
+
+requestAnimationFrame(function(){
+  var l = document.getElementById('loading');
+  if(l){ l.classList.add('hidden'); setTimeout(function(){l.remove();}, 400); }
+});
+</script>
+</body>
+</html>
