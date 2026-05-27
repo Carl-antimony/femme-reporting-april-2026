@@ -1,0 +1,1505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Femme Connection · Klaviyo + Yotpo Handover</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=Inter+Tight:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1F4D43;
+    --green-deep: #143028;
+    --green-soft: #2A6356;
+    --pink: #D17A92;
+    --pink-soft: #E8B5C2;
+    --beige: #C9BDA7;
+    --beige-soft: #EFEAE0;
+    --cream: #FAF6EE;
+    --ink: #1A1A1A;
+    --body: #3A3A3A;
+    --muted: #8A8580;
+    --rule: rgba(31, 77, 67, 0.15);
+    --rule-strong: rgba(31, 77, 67, 0.35);
+    --display: 'Fraunces', Georgia, serif;
+    --sans: 'Inter Tight', -apple-system, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--body);
+    line-height: 1.6;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Subtle paper grain */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.12 0 0 0 0 0.30 0 0 0 0 0.26 0 0 0 0.04 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
+  }
+
+  .container { position: relative; z-index: 2; }
+
+  /* ============ HERO ============ */
+  .hero {
+    background: var(--green);
+    color: var(--cream);
+    padding: 4rem 3rem 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0; right: 0; height: 60px;
+    background: var(--cream);
+    clip-path: polygon(0 100%, 100% 100%, 100% 40%, 0 80%);
+  }
+
+  /* decorative hearts */
+  .heart {
+    position: absolute;
+    pointer-events: none;
+    opacity: 0.18;
+  }
+  .heart-1 { top: 2rem; left: 2rem; width: 90px; height: 90px; color: var(--pink); }
+  .heart-2 { top: 1.5rem; right: 4rem; width: 60px; height: 60px; color: var(--beige); opacity: 0.25; }
+  .heart-3 { bottom: 4rem; right: 2rem; width: 130px; height: 130px; color: var(--pink-soft); opacity: 0.12; }
+
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--pink-soft);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .eyebrow::before {
+    content: '';
+    width: 32px; height: 1px;
+    background: var(--pink);
+  }
+
+  h1.title {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    font-variation-settings: "opsz" 144;
+  }
+  .title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--pink-soft);
+  }
+
+  .subtitle {
+    font-family: var(--display);
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--beige);
+    max-width: 580px;
+    line-height: 1.4;
+    margin-bottom: 3rem;
+    font-style: italic;
+  }
+
+  .hero-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(250, 246, 238, 0.15);
+  }
+  .meta-item .meta-label {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--beige);
+    opacity: 0.7;
+    margin-bottom: 0.4rem;
+  }
+  .meta-item .meta-value {
+    font-family: var(--display);
+    font-size: 1.05rem;
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  /* ============ CHECKLIST (HERO #2) ============ */
+  .checklist-section {
+    max-width: 1200px;
+    margin: -3rem auto 0;
+    padding: 0 3rem;
+    position: relative;
+    z-index: 3;
+  }
+
+  .checklist-card {
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 3rem 3rem 2.5rem;
+    box-shadow: 0 20px 60px -20px rgba(31, 77, 67, 0.18);
+    position: relative;
+  }
+  .checklist-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 80px; height: 3px;
+    background: var(--pink);
+  }
+
+  .checklist-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .checklist-head h2 {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 400;
+    color: var(--green);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .checklist-head .progress {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .progress-pill {
+    background: var(--green);
+    color: var(--cream);
+    padding: 0.35rem 0.8rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+  }
+
+  .checklist-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.25rem 3rem;
+  }
+
+  .check-item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 1rem;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--rule);
+    transition: padding-left 0.3s ease;
+    cursor: default;
+  }
+  .check-item:hover {
+    padding-left: 0.5rem;
+  }
+  .check-item:last-child { border-bottom: none; }
+
+  .check-mark {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--green);
+    color: var(--cream);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .check-mark svg { width: 12px; height: 12px; }
+
+  .check-body { min-width: 0; }
+  .check-title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+    letter-spacing: -0.005em;
+  }
+  .check-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  .checklist-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .checklist-footer .note {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--green-soft);
+    font-size: 1rem;
+  }
+  .checklist-footer .signed {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--pink);
+    font-size: 1rem;
+  }
+
+  /* ============ MAIN CONTENT ============ */
+  main {
+    max-width: 1200px;
+    margin: 5rem auto 0;
+    padding: 0 3rem 5rem;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    margin-top: 4rem;
+  }
+  .section-header .num {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: var(--pink);
+    font-weight: 400;
+  }
+  .section-header h2 {
+    font-family: var(--display);
+    font-size: 2.25rem;
+    font-weight: 400;
+    color: var(--green);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-lead {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    color: var(--green-soft);
+    font-style: italic;
+    line-height: 1.5;
+    max-width: 720px;
+    margin-bottom: 2rem;
+  }
+
+  /* ============ CADENCE CARDS ============ */
+  .cadence-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .cadence-card {
+    background: #FFFFFF;
+    border: 1px solid var(--rule);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .cadence-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 3px;
+    background: var(--pink);
+  }
+  .cadence-date {
+    font-family: var(--display);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.02em;
+  }
+  .cadence-date sup {
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--pink);
+    font-weight: 400;
+    vertical-align: super;
+  }
+  .cadence-month {
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+  }
+  .cadence-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: 0.5rem;
+  }
+  .cadence-desc {
+    font-size: 0.88rem;
+    color: var(--body);
+    line-height: 1.5;
+  }
+
+  /* ============ METRIC GRID ============ */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 1.5rem;
+  }
+  .metric-cell {
+    background: #FFFFFF;
+    padding: 1.75rem 1.5rem;
+    position: relative;
+  }
+  .metric-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+  }
+  .metric-value {
+    font-family: var(--display);
+    font-size: 1.85rem;
+    font-weight: 400;
+    color: var(--green);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+  }
+  .metric-trend {
+    font-size: 0.75rem;
+    color: var(--green-soft);
+    font-weight: 500;
+  }
+  .metric-trend.warn { color: var(--pink); }
+  .metric-trend .arr { font-size: 0.7rem; margin-right: 0.2rem; }
+
+  /* ============ ACCORDION SECTIONS ============ */
+  .accordion {
+    border-top: 1px solid var(--rule);
+  }
+  .accordion-item {
+    border-bottom: 1px solid var(--rule);
+  }
+  .accordion-toggle {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 1.5rem 0;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    font-family: var(--sans);
+    transition: color 0.2s ease;
+  }
+  .accordion-toggle:hover { color: var(--green); }
+  .accordion-toggle .acc-num {
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--pink);
+    font-size: 0.95rem;
+    min-width: 32px;
+  }
+  .accordion-toggle .acc-title {
+    flex: 1;
+    font-family: var(--display);
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: var(--green);
+    letter-spacing: -0.005em;
+  }
+  .accordion-toggle .acc-icon {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    border: 1px solid var(--rule-strong);
+    color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+  }
+  .accordion-toggle .acc-icon svg { width: 12px; height: 12px; transition: transform 0.3s ease; }
+  .accordion-item.open .acc-icon { background: var(--green); color: var(--cream); border-color: var(--green); }
+  .accordion-item.open .acc-icon svg { transform: rotate(45deg); }
+
+  .accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+  }
+  .accordion-item.open .accordion-content {
+    max-height: 4000px;
+  }
+  .accordion-inner {
+    padding: 0 0 2.5rem 3rem;
+    color: var(--body);
+  }
+
+  .accordion-inner h4 {
+    font-family: var(--display);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--green);
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+  .accordion-inner h4:first-child { margin-top: 0; }
+  .accordion-inner p {
+    font-size: 0.92rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+    max-width: 780px;
+  }
+  .accordion-inner ul {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  .accordion-inner li {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding-left: 1.5rem;
+    position: relative;
+    margin-bottom: 0.5rem;
+    max-width: 780px;
+  }
+  .accordion-inner li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.75em;
+    width: 6px; height: 1px;
+    background: var(--pink);
+  }
+
+  /* Callout */
+  .callout {
+    background: var(--beige-soft);
+    border-left: 3px solid var(--pink);
+    padding: 1.25rem 1.5rem;
+    margin: 1.5rem 0;
+    font-family: var(--display);
+    font-style: italic;
+    color: var(--green-deep);
+    font-size: 0.98rem;
+    line-height: 1.55;
+    max-width: 780px;
+  }
+
+  /* Tables inside accordion */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.85rem;
+  }
+  .data-table th {
+    background: var(--green);
+    color: var(--cream);
+    text-align: left;
+    padding: 0.75rem 1rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .data-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .data-table tr:nth-child(even) td { background: var(--beige-soft); }
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.6rem;
+    border-radius: 100px;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .badge.live { background: var(--green); color: var(--cream); }
+  .badge.draft { background: var(--beige); color: var(--green-deep); }
+  .badge.flow-a { background: var(--pink-soft); color: var(--green-deep); }
+  .badge.flow-b { background: var(--pink); color: var(--cream); }
+  .badge.testing { background: transparent; color: var(--muted); border: 1px solid var(--beige); }
+
+  /* Accordion category dividers */
+  .acc-category {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2.5rem 0 0.5rem;
+  }
+  .acc-category:first-child { margin-top: 0; }
+  .acc-category-label {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .acc-category::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  /* Split comparison cells (redeemer vs non) */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 1.5rem;
+  }
+  .compare-cell {
+    background: #fff;
+    padding: 1.5rem;
+  }
+  .compare-cell-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+  .compare-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.88rem;
+  }
+  .compare-row:last-child { border-bottom: none; }
+  .compare-row-label { color: var(--muted); }
+  .compare-row-value { font-weight: 600; color: var(--green); font-family: var(--display); font-size: 1rem; }
+
+  /* Tier mini-cards */
+  .tier-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 1rem 0 1.5rem;
+  }
+  .tier-cell {
+    background: #fff;
+    padding: 1.25rem 1rem;
+  }
+  .tier-name {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--green);
+    margin-bottom: 0.75rem;
+    font-style: italic;
+  }
+  .tier-stat { font-size: 0.78rem; color: var(--body); margin-bottom: 0.3rem; }
+  .tier-stat strong { color: var(--ink); font-weight: 600; }
+
+  /* ============ SIGN OFF ============ */
+  .signoff {
+    background: var(--green);
+    color: var(--cream);
+    padding: 5rem 3rem;
+    margin-top: 5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .signoff .heart-bg {
+    position: absolute;
+    color: var(--green-soft);
+    opacity: 0.5;
+  }
+  .signoff .heart-bg.left { top: 2rem; left: 4rem; width: 80px; height: 80px; }
+  .signoff .heart-bg.right { bottom: 2rem; right: 4rem; width: 100px; height: 100px; opacity: 0.3; }
+
+  .signoff-inner { position: relative; z-index: 2; max-width: 700px; margin: 0 auto; }
+  .signoff h3 {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.3;
+    margin-bottom: 1.5rem;
+    color: var(--cream);
+  }
+  .signoff h3 em { color: var(--pink-soft); }
+  .signoff p {
+    font-size: 0.95rem;
+    color: var(--beige);
+    line-height: 1.6;
+    max-width: 540px;
+    margin: 0 auto 2rem;
+  }
+  .signoff .sig {
+    font-family: var(--display);
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--pink-soft);
+    letter-spacing: 0.02em;
+  }
+
+  /* Responsive */
+  @media (max-width: 880px) {
+    .hero { padding: 3rem 1.5rem 4rem; }
+    .checklist-section { padding: 0 1.5rem; }
+    .checklist-card { padding: 2rem 1.5rem; }
+    .checklist-grid { grid-template-columns: 1fr; gap: 0; }
+    main { padding: 0 1.5rem 3rem; margin-top: 3rem; }
+    .cadence-grid { grid-template-columns: 1fr; }
+    .metric-grid { grid-template-columns: repeat(2, 1fr); }
+    .section-header h2 { font-size: 1.75rem; }
+    .accordion-inner { padding-left: 1rem; }
+    .hero-meta { gap: 1.5rem; }
+    .signoff { padding: 3rem 1.5rem; margin-top: 3rem; }
+    .signoff h3 { font-size: 1.5rem; }
+    h1.title { font-size: 2.25rem; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero">
+    <svg class="heart heart-1" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9C1 9 2 5 6 5c2 0 3.5 1 4 2 0.5-1 2-2 4-2 4 0 5 4 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+    <svg class="heart heart-2" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9C1 9 2 5 6 5c2 0 3.5 1 4 2 0.5-1 2-2 4-2 4 0 5 4 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+    <svg class="heart heart-3" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9C1 9 2 5 6 5c2 0 3.5 1 4 2 0.5-1 2-2 4-2 4 0 5 4 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+
+    <div class="hero-inner">
+      <div class="eyebrow">Account Handover · Brira → Femme Connection</div>
+      <h1 class="title">Femme Connection<br><em>Klaviyo + Yotpo</em></h1>
+      <p class="subtitle">A complete handover of the email, SMS, reviews, and loyalty programs — and the rhythm that runs them.</p>
+      <div class="hero-meta">
+        <div class="meta-item">
+          <div class="meta-label">Effective</div>
+          <div class="meta-value">1 June 2026</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Prepared by</div>
+          <div class="meta-value">Brira · Antimony Studio</div>
+        </div>
+        <div class="meta-item">
+          <div class="meta-label">Status</div>
+          <div class="meta-value">All deliverables complete</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section class="checklist-section">
+    <div class="checklist-card">
+      <div class="checklist-head">
+        <h2>Handover checklist</h2>
+        <div class="progress">
+          <span>8 of 8 complete</span>
+          <span class="progress-pill">Signed off</span>
+        </div>
+      </div>
+
+      <div class="checklist-grid">
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Klaviyo flows — fully optimised</div>
+            <div class="check-desc">Every major flow built, tested, and live with winning A/B variants documented.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Monthly reporting — delivered</div>
+            <div class="check-desc">Standard reporting cadence on the 10th of each month. April 2026 deck is the reference template.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Yotpo loyalty breakdown — live</div>
+            <div class="check-desc">Recurring campaign on the 15th of each month with points balance and tier status.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Yotpo Reviews & Loyalty — operational</div>
+            <div class="check-desc">Review requests, moderation, and the multi-tier VIP program all live.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">SMS program — scaled and stable</div>
+            <div class="check-desc">22K subscribers, 9 active flows, A$6,198 monthly revenue at handover.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Sale-period playbooks — documented</div>
+            <div class="check-desc">Easter and Mother's Day runs delivered. No-discount flow variants in place for future sales.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Brand voice & design system — codified</div>
+            <div class="check-desc">Tone of voice, palette, typography, and email design conventions established and applied.</div>
+          </div>
+        </div>
+
+        <div class="check-item">
+          <div class="check-mark"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 6l3 3 5-6"/></svg></div>
+          <div class="check-body">
+            <div class="check-title">Deliverability — Excellent rating</div>
+            <div class="check-desc">Bounce 0.125%, unsubscribe 0.128%. Healthy baseline to inherit.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="checklist-footer">
+        <div class="note">Account is in good shape. Rhythms are established. Ownership returns to the brand.</div>
+        <div class="signed">— Brira</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ MAIN ============ -->
+  <main>
+
+    <!-- Recurring cadence -->
+    <div class="section-header">
+      <span class="num">01</span>
+      <h2>The monthly rhythm</h2>
+    </div>
+    <p class="section-lead">Two recurring activities run on a fixed schedule. Continuing these protects the rhythm members and the team have come to expect.</p>
+
+    <div class="cadence-grid">
+      <div class="cadence-card">
+        <div class="cadence-date">10<sup>th</sup></div>
+        <div class="cadence-month">Every month</div>
+        <div class="cadence-title">Monthly performance report</div>
+        <div class="cadence-desc">Klaviyo channel performance, flows, campaigns, SMS, business metrics, and A/B test results. Delivered as the standard reference deck.</div>
+      </div>
+      <div class="cadence-card">
+        <div class="cadence-date">15<sup>th</sup></div>
+        <div class="cadence-month">Every month</div>
+        <div class="cadence-title">Yotpo loyalty breakdown campaign</div>
+        <div class="cadence-desc">Points balance and tier status sent to members. The touchpoint that drives points awareness and redemption activity.</div>
+      </div>
+    </div>
+
+    <div class="callout">
+      The 15th-of-month loyalty breakdown is the one member touchpoint that drives points awareness and redemption activity. Members expect it. Skipping a month is visible.
+    </div>
+
+    <!-- Current state -->
+    <div class="section-header">
+      <span class="num">02</span>
+      <h2>Klaviyo performance — April 2026</h2>
+    </div>
+    <p class="section-lead">April 2026 baseline — the numbers being handed over.</p>
+
+    <div class="metric-grid">
+      <div class="metric-cell">
+        <div class="metric-label">Total Revenue</div>
+        <div class="metric-value">A$149,901</div>
+        <div class="metric-trend"><span class="arr">↑</span>+7.46% YoY</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Attributed Share</div>
+        <div class="metric-value">40.66%</div>
+        <div class="metric-trend">Stable</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Campaign Revenue</div>
+        <div class="metric-value">A$32,270</div>
+        <div class="metric-trend"><span class="arr">↑</span>+11.3% YoY</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Flow Revenue</div>
+        <div class="metric-value">A$28,679</div>
+        <div class="metric-trend">Steady</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">SMS Revenue</div>
+        <div class="metric-value">A$6,198</div>
+        <div class="metric-trend"><span class="arr">↑</span>+5.4% MoM</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">SMS Subscribers</div>
+        <div class="metric-value">22,056</div>
+        <div class="metric-trend"><span class="arr">↑</span>+99% YoY</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">AOV (Campaign)</div>
+        <div class="metric-value">A$105</div>
+        <div class="metric-trend"><span class="arr">↑</span>+3.3% YoY</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">MD '26 Series</div>
+        <div class="metric-value">A$24,002</div>
+        <div class="metric-trend"><span class="arr">↑</span>2.4× prior year</div>
+      </div>
+    </div>
+
+    <!-- ============ YOTPO STATE ============ -->
+    <div class="section-header">
+      <span class="num">03</span>
+      <h2>Yotpo — 90-day performance</h2>
+    </div>
+    <p class="section-lead">Loyalty, Reviews, and UGC at handover. Data sourced from Yotpo dashboards, last 90 days to 27 May 2026.</p>
+
+    <!-- Loyalty headline metrics -->
+    <div class="metric-grid" style="grid-template-columns: repeat(4,1fr);">
+      <div class="metric-cell">
+        <div class="metric-label">Redeeming Customers</div>
+        <div class="metric-value">218</div>
+        <div class="metric-trend">Last 90 days</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Participation Rate</div>
+        <div class="metric-value">5.7%</div>
+        <div class="metric-trend">Active loyalty members</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Added Rev / Customer</div>
+        <div class="metric-value">+A$144</div>
+        <div class="metric-trend">vs non-redeemers</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Added Revenue</div>
+        <div class="metric-value">A$31,458</div>
+        <div class="metric-trend">Loyalty-attributed</div>
+      </div>
+    </div>
+
+    <!-- Tiers headline -->
+    <div class="metric-grid" style="grid-template-columns: repeat(4,1fr); margin-top: 1px;">
+      <div class="metric-cell">
+        <div class="metric-label">Customers in Tiers</div>
+        <div class="metric-value">45,125</div>
+        <div class="metric-trend">All tiers combined</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Purchasing Customers</div>
+        <div class="metric-value">2,710</div>
+        <div class="metric-trend">Made a purchase in period</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Avg Rev / Customer</div>
+        <div class="metric-value">A$127</div>
+        <div class="metric-trend">Across all tiers</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Revenue from Tiers</div>
+        <div class="metric-value">A$344,800</div>
+        <div class="metric-trend">Last 90 days</div>
+      </div>
+    </div>
+
+    <!-- Redeemer vs Non-redeemer comparison -->
+    <p class="section-lead" style="font-size:0.85rem; margin-top:2rem; margin-bottom:0.75rem;">Redeemer vs Non-redeemer behaviour</p>
+    <div class="compare-grid">
+      <div class="compare-cell">
+        <div class="compare-cell-label">Redeemers</div>
+        <div class="compare-row"><span class="compare-row-label">Repeat Purchase Rate</span><span class="compare-row-value">60%</span></div>
+        <div class="compare-row"><span class="compare-row-label">Avg Purchases</span><span class="compare-row-value">2.51</span></div>
+        <div class="compare-row"><span class="compare-row-label">Avg Revenue / Customer</span><span class="compare-row-value">A$254</span></div>
+        <div class="compare-row"><span class="compare-row-label">Average Order Value</span><span class="compare-row-value">A$101</span></div>
+      </div>
+      <div class="compare-cell">
+        <div class="compare-cell-label">Non-Redeemers</div>
+        <div class="compare-row"><span class="compare-row-label">Repeat Purchase Rate</span><span class="compare-row-value">13%</span></div>
+        <div class="compare-row"><span class="compare-row-label">Avg Purchases</span><span class="compare-row-value">1.17</span></div>
+        <div class="compare-row"><span class="compare-row-label">Avg Revenue / Customer</span><span class="compare-row-value">A$110</span></div>
+        <div class="compare-row"><span class="compare-row-label">Average Order Value</span><span class="compare-row-value">A$93</span></div>
+      </div>
+    </div>
+
+    <!-- Tier breakdown -->
+    <p class="section-lead" style="font-size:0.85rem; margin-top:2rem; margin-bottom:0.75rem;">Tier breakdown — customers &amp; performance</p>
+    <div class="tier-grid">
+      <div class="tier-cell">
+        <div class="tier-name">Courture Queen</div>
+        <div class="tier-stat">Customers: <strong>64</strong></div>
+        <div class="tier-stat">Avg Rev: <strong>A$535</strong></div>
+        <div class="tier-stat">Avg Purchases: <strong>4.0</strong></div>
+        <div class="tier-stat">AOV: <strong>A$134</strong></div>
+        <div class="tier-stat">% Redeemers: <strong>51.3%</strong></div>
+      </div>
+      <div class="tier-cell">
+        <div class="tier-name">Style Icon</div>
+        <div class="tier-stat">Customers: <strong>191</strong></div>
+        <div class="tier-stat">Avg Rev: <strong>A$195</strong></div>
+        <div class="tier-stat">Avg Purchases: <strong>1.5</strong></div>
+        <div class="tier-stat">AOV: <strong>A$120</strong></div>
+        <div class="tier-stat">% Redeemers: <strong>46.2%</strong></div>
+      </div>
+      <div class="tier-cell">
+        <div class="tier-name">Visionary</div>
+        <div class="tier-stat">Customers: <strong>136</strong></div>
+        <div class="tier-stat">Avg Rev: <strong>A$174</strong></div>
+        <div class="tier-stat">Avg Purchases: <strong>1.5</strong></div>
+        <div class="tier-stat">AOV: <strong>A$116</strong></div>
+        <div class="tier-stat">% Redeemers: <strong>46.1%</strong></div>
+      </div>
+      <div class="tier-cell">
+        <div class="tier-name">Trendsetter</div>
+        <div class="tier-stat">Customers: <strong>618</strong></div>
+        <div class="tier-stat">Avg Rev: <strong>A$155</strong></div>
+        <div class="tier-stat">Avg Purchases: <strong>1.2</strong></div>
+        <div class="tier-stat">AOV: <strong>A$103</strong></div>
+        <div class="tier-stat">% Redeemers: <strong>32.9%</strong></div>
+      </div>
+      <div class="tier-cell">
+        <div class="tier-name">Curator</div>
+        <div class="tier-stat">Customers: <strong>44,522</strong></div>
+        <div class="tier-stat">Avg Rev: <strong>A$112</strong></div>
+        <div class="tier-stat">Avg Purchases: <strong>1.0</strong></div>
+        <div class="tier-stat">AOV: <strong>A$94</strong></div>
+        <div class="tier-stat">% Redeemers: <strong>7.5%</strong></div>
+      </div>
+    </div>
+
+    <!-- ALM metrics -->
+    <p class="section-lead" style="font-size:0.85rem; margin-top:2rem; margin-bottom:0.75rem;">Active Loyalty Member (ALM) metrics — last 90 days</p>
+    <div class="metric-grid" style="grid-template-columns: repeat(4,1fr);">
+      <div class="metric-cell">
+        <div class="metric-label">ALM Incremental Revenue</div>
+        <div class="metric-value">A$43,274</div>
+        <div class="metric-trend"><span class="arr">↑</span>+71.1%</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">ALM Participation Rate</div>
+        <div class="metric-value">9.9%</div>
+        <div class="metric-trend"><span class="arr">↑</span>+76.8%</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Avg Rev — ALM</div>
+        <div class="metric-value">A$218.5</div>
+        <div class="metric-trend">vs A$106.1 non-ALM</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">ALM Repeat Purchase Rate</div>
+        <div class="metric-value">50.9%</div>
+        <div class="metric-trend">vs 11.4% non-ALM</div>
+      </div>
+    </div>
+
+    <!-- Reviews -->
+    <p class="section-lead" style="font-size:0.85rem; margin-top:2rem; margin-bottom:0.75rem;">Reviews — all time to 27 May 2026</p>
+    <div class="metric-grid" style="grid-template-columns: repeat(4,1fr);">
+      <div class="metric-cell">
+        <div class="metric-label">Total Reviews</div>
+        <div class="metric-value">487</div>
+        <div class="metric-trend">All time (5,186 total ever)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Avg Star Rating</div>
+        <div class="metric-value">4.64</div>
+        <div class="metric-trend">All time: 4.68</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">5-Star Reviews</div>
+        <div class="metric-value">81.7%</div>
+        <div class="metric-trend">398 of 487 reviews</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Published Rate</div>
+        <div class="metric-value">80%</div>
+        <div class="metric-trend">99% AU · 1% NZ audience</div>
+      </div>
+    </div>
+
+    <!-- UGC -->
+    <p class="section-lead" style="font-size:0.85rem; margin-top:2rem; margin-bottom:0.75rem;">Visual UGC — Feb 25 to May 25, 2026</p>
+    <div class="metric-grid" style="grid-template-columns: repeat(4,1fr);">
+      <div class="metric-cell">
+        <div class="metric-label">Photos Generated</div>
+        <div class="metric-value">2</div>
+        <div class="metric-trend">Via review request (auto)</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Photos Published</div>
+        <div class="metric-value">4</div>
+        <div class="metric-trend">Added to albums &amp; widgets</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Product Photo Coverage</div>
+        <div class="metric-value">&lt;1%</div>
+        <div class="metric-trend">17 of 16,867 product pages</div>
+      </div>
+      <div class="metric-cell">
+        <div class="metric-label">Instagram Approvals</div>
+        <div class="metric-value">0</div>
+        <div class="metric-trend warn">0 of 252 — needs attention</div>
+      </div>
+    </div>
+    <div class="callout">UGC coverage is very low — less than 1% of products have photos. Instagram integration is connected (252 accounts) but zero photos have been approved. Activating the Instagram curation workflow and encouraging review photo submissions would meaningfully improve social proof across the site.</div>
+
+    <!-- Detail accordion — renumbered to 04 -->
+    <div class="section-header">
+      <span class="num">04</span>
+      <h2>The detail, by section</h2>
+    </div>
+    <p class="section-lead">Open any section for the full operating context.</p>
+
+    <div class="accordion">
+
+      <!-- ── KLAVIYO ── -->
+      <div class="acc-category"><span class="acc-category-label">Klaviyo</span></div>
+
+      <!-- i. Scope -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">i.</span>
+          <span class="acc-title">Scope of work delivered</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>Brira operated the Klaviyo and Yotpo accounts on a monthly cycle, covering build, optimisation, recurring sends, and reporting.</p>
+            <h4>Klaviyo</h4>
+            <ul>
+              <li>Flow setup, design, copywriting, and ongoing optimisation</li>
+              <li>Month-on-month performance review with strategic recommendations</li>
+              <li>A/B testing across every major flow — winners documented in monthly reports</li>
+              <li>Campaign builds for seasonal and promotional sends (Easter, Mother's Day)</li>
+              <li>SMS flows and list growth management</li>
+            </ul>
+            <h4>Yotpo</h4>
+            <ul>
+              <li>Reviews — request templates, moderation, widget placement</li>
+              <li>Loyalty &amp; Referrals — earning rules, tier structure, redemption strategy</li>
+              <li>Recurring monthly loyalty breakdown campaign to members</li>
+              <li>Cross-tool coordination so Yotpo and Klaviyo never duplicate sends</li>
+            </ul>
+            <h4>Reporting</h4>
+            <ul>
+              <li>Monthly performance report covering all channels and business metrics</li>
+              <li>A/B test results with win probability and recommended next steps</li>
+              <li>Strategic recommendations and key insights</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ii. Flow inventory -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">ii.</span>
+          <span class="acc-title">Flow inventory at handover</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>Every major flow is live, tested, and running on a winning variant. Naming convention: <strong>[AS]</strong> = Antimony Studio build, <strong>Instant Audiences —</strong> = parallel flow on the IA pool, <strong>(Mel)</strong> = legacy, <strong>(WITHOUT DISCOUNT)</strong> = sale-period variant.</p>
+            <table class="data-table">
+              <thead>
+                <tr><th>Flow</th><th>Trigger</th><th>Status</th><th>Winner</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>[AS] Welcome Series for Non-Buyers</td><td>List signup, no purchase</td><td><span class="badge live">Live</span></td><td><span class="badge flow-b">Flow B</span></td></tr>
+                <tr><td>[AS] Abandoned Cart 2025</td><td>Added to Cart</td><td><span class="badge live">Live</span></td><td><span class="badge flow-b">Flow B</span></td></tr>
+                <tr><td>[AS] Abandoned Checkout 2025</td><td>Checkout Started</td><td><span class="badge live">Live</span></td><td><span class="badge flow-b">Flow B</span></td></tr>
+                <tr><td>[AS] Browse Abandonment</td><td>Viewed Product</td><td><span class="badge live">Live</span></td><td><span class="badge flow-b">Flow B</span></td></tr>
+                <tr><td>[AS] Site Abandonment</td><td>Active on Site</td><td><span class="badge live">Live</span></td><td><span class="badge flow-a">Flow A</span></td></tr>
+                <tr><td>[AS] Immediate Cross-Sell/Up-sell</td><td>Post-purchase</td><td><span class="badge live">Live</span></td><td><span class="badge flow-a">Flow A</span></td></tr>
+                <tr><td>[AS] New Customer Post Purchase</td><td>First purchase</td><td><span class="badge live">Live</span></td><td><span class="badge flow-a">Flow A</span></td></tr>
+                <tr><td>[AS] Repeat Customer Post Purchase</td><td>Repeat purchase</td><td><span class="badge live">Live</span></td><td><span class="badge testing">Still Testing</span></td></tr>
+                <tr><td>[AS] Customer Winback 2025</td><td>Lapsed customer</td><td><span class="badge live">Live</span></td><td><span class="badge testing">Still Testing</span></td></tr>
+                <tr><td>Instant Audiences — Welcome Series</td><td>IA trigger</td><td><span class="badge live">Live</span></td><td>Highest RPR — A$15.20</td></tr>
+                <tr><td>Instant Audiences — Abandoned Cart</td><td>IA Item Added</td><td><span class="badge live">Live</span></td><td><span class="badge testing">Still Testing</span></td></tr>
+                <tr><td>Instant Audiences — Abandoned Checkout</td><td>IA Cart viewed</td><td><span class="badge live">Live</span></td><td><span class="badge testing">Still Testing</span></td></tr>
+                <tr><td>(Mel) Back In Stock — VIP / Non-VIP</td><td>Back-in-stock</td><td><span class="badge live">Live</span></td><td>Legacy</td></tr>
+              </tbody>
+            </table>
+            <h4>Known issue — Welcome flow duplication</h4>
+            <p>A duplication issue was identified in April 2026 where some profiles were entering both the Antimony and Instant Audiences welcome flows simultaneously. Evidence has been documented and a recommended fix prepared. The incoming operator should confirm this is resolved and monitor profile entry points across both flows.</p>
+            <div class="callout">Monitor for duplicate profile entries across [AS] Welcome Series and Instant Audiences — Welcome Series. If the issue resurfaces, refer to the documented evidence and fix recommendation from the April 2026 audit.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iii. Sign-up forms -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">iii.</span>
+          <span class="acc-title">Sign-up forms</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>Sign-up forms were reviewed and rebuilt as part of the April 2026 scope. A full diagnostic review was conducted and the pop-up was redesigned. Known issues in the existing forms were also resolved.</p>
+            <h4>What was completed</h4>
+            <ul>
+              <li>Full diagnostic review of all sign-up forms</li>
+              <li>Pop-up redesigned to align with the updated brand design system</li>
+              <li>Technical issues in form submissions resolved</li>
+            </ul>
+            <h4>What to keep in mind</h4>
+            <ul>
+              <li>Forms feed directly into the Welcome Series trigger — any changes to form targeting or list assignment will affect flow entry</li>
+              <li>The Instant Audiences pool operates on a separate list trigger; sign-up form changes should be checked against both entry points</li>
+              <li>Footer consistency across all forms and emails was audited in April — maintain the approved footer across any new builds</li>
+            </ul>
+            <div class="callout">Do not modify sign-up form list assignments without checking downstream flow entry conditions. A change here can silently break welcome flow routing.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- iv. Brand voice & design system -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">iv.</span>
+          <span class="acc-title">Brand voice &amp; design system</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <h4>Voice</h4>
+            <p>Warm, feminine, and confidence-led. The audience is a broad age range of Australian women shopping for everyday wear, occasion wear, and maternity-friendly pieces. Copy reads like a stylish friend who already knows what suits you — not a stylist talking down, and not a hype brand using urgency tricks.</p>
+            <ul>
+              <li>Second person (you, your) — never "customers" or "shoppers" in body copy</li>
+              <li>First-name personalisation in subject lines and body where natural; fallback to "lovely" or "there"</li>
+              <li>Australian English everywhere — favourite, colour, organise, personalise</li>
+              <li>Emojis used sparingly — pink heart, sparkle, flower — usually one per subject line maximum</li>
+            </ul>
+            <h4>Design system</h4>
+            <ul>
+              <li><strong>Primary green</strong> #1F4D43 — backgrounds, headlines on light, primary CTA</li>
+              <li><strong>Accent pink</strong> #D17A92 — hearts, accents, secondary CTA</li>
+              <li><strong>Warm beige</strong> #C9BDA7 — soft backgrounds and tags</li>
+              <li>All-caps display headers with generous letter spacing</li>
+              <li>Pink and beige hearts as a signature motif — used sparingly in seasonal headers</li>
+              <li>Hero ratio standard 600px wide; approved mobile and desktop variants per template</li>
+            </ul>
+            <div class="callout">Approved mobile and desktop hero designs exist for every flow. The recurring optimisation note across A/B reports is: apply approved designs across every touchpoint. Do not deviate without re-approval.</div>
+            <h4>Navigation templates — rollout from June 2026</h4>
+            <p>Two newly built email navigation elements — <strong>Main Nav Gif</strong> and <strong>New Nav Final</strong> — are saved in the <strong>Templates tab in Klaviyo</strong>. These should be rolled out across all Instant Audiences flows and campaigns from June 2026 onwards.</p>
+            <div class="callout">When building or updating any Instant Audiences flow or campaign from June 2026, pull the nav from the Templates tab — do not recreate it manually. Consistency across touchpoints is the goal.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- v. Sale-period flow handling -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">v.</span>
+          <span class="acc-title">Sale-period flow handling</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>During major promotions, standard abandonment flows include a 10% discount code. To prevent customers shopping at sale prices from receiving a further discount on top — which caused complaints in the past — a set of cloned "WITHOUT DISCOUNT" variants has been built and sits in Klaviyo drafts ready to activate.</p>
+            <h4>Flows in drafts (ready to activate)</h4>
+            <table class="data-table">
+              <thead><tr><th>Flow</th><th>Trigger</th></tr></thead>
+              <tbody>
+                <tr><td>[AS] Abandoned Cart (WITHOUT DISCOUNT)</td><td>Added to Cart</td></tr>
+                <tr><td>[AS] Abandoned Checkout 2025 (WITHOUT DISCOUNT)</td><td>Checkout Started</td></tr>
+                <tr><td>Instant Audiences — Abandoned Checkout (WITHOUT DISCOUNT)</td><td>Cart viewed / Checkout Started</td></tr>
+                <tr><td>Instant Audiences — Abandoned Cart (WITHOUT DISCOUNT)</td><td>Item Added to Cart</td></tr>
+              </tbody>
+            </table>
+            <h4>How the swap works</h4>
+            <ul>
+              <li>Outside sale periods: standard (discounted) variants are live</li>
+              <li>At the start of a major promo: pause the standard variants, activate the WITHOUT DISCOUNT ones using a Klaviyo timer</li>
+              <li>After the sale ends: revert — re-activate standard variants, pause WITHOUT DISCOUNT ones</li>
+            </ul>
+            <div class="callout">The swap is manual — no automation toggles these. Set calendar reminders for the day before the sale opens and the day it ends. Watch the Loom walkthrough below for step-by-step timer instructions.</div>
+            <p><a href="https://www.loom.com/share/fac09c652a9d4b64a64279f075de32fe" target="_blank" style="color: var(--green); font-weight: 500;">▶ Watch the instructional Loom video</a></p>
+            <h4>Recent sale playbooks</h4>
+            <ul>
+              <li><strong>Easter (April 2026)</strong> — discount abandonment flows live, standard cadence</li>
+              <li><strong>Mother's Day early sale</strong> — discount flows live, early-access VIP send included</li>
+              <li><strong>Mother's Day main sale</strong> — no-discount variants active; 12 campaigns generating A$24,002 (vs A$9,930 over 4 campaigns the prior year)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- vi. A/B testing -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">vi.</span>
+          <span class="acc-title">A/B testing protocol</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>A/B testing was treated as a continuous practice, not a campaign-specific one. Every major flow has been tested at least once, with winners documented in the monthly reporting deck.</p>
+            <h4>Test variables</h4>
+            <ul>
+              <li>Subject line — the most common test</li>
+              <li>Send time — 8:30am vs 10:30am vs 1pm AEST tested across multiple flows</li>
+              <li>Content angle (urgency vs social proof vs style-led)</li>
+              <li>Discount inclusion (with / without)</li>
+            </ul>
+            <h4>Statistical rules</h4>
+            <ul>
+              <li>Run for at least 30 days; high-volume flows extended beyond</li>
+              <li>Use Klaviyo's built-in win probability, not just point estimates</li>
+              <li>Conversion-based metrics (placed order, revenue) override engagement when calling a winner</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- vii. Things to watch -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">vii.</span>
+          <span class="acc-title">Things to keep an eye on</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>The account is healthy overall. These are the items rated Poor in the April 2026 review — none are urgent, but each is worth attention in the next quarter.</p>
+            <ul>
+              <li><strong>Welcome Series spam report rate (0.245%)</strong> — only Poor-rated top-funnel metric. Worth investigating subject lines and from-name perception.</li>
+              <li><strong>Thank You flow unsubscribe rate (1.13%)</strong> — likely a frequency or content issue.</li>
+              <li><strong>Abandoned Cart conversion rate at campaign layer (0.452%)</strong> — flow-level is stronger; the gap is in how cart-recovery campaigns convert.</li>
+              <li><strong>Returns rate (2.84%)</strong> — sits in the 17th percentile. Not a Klaviyo issue, but suggests post-purchase content can do more to set fit and expectations.</li>
+              <li><strong>AOV at A$69 (Fair)</strong> — bundling and cart-size lifts are the highest-impact growth lever.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── YOTPO ── -->
+      <div class="acc-category"><span class="acc-category-label">Yotpo</span></div>
+
+      <!-- viii. Yotpo Reviews & Loyalty -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">viii.</span>
+          <span class="acc-title">Yotpo — Reviews &amp; Loyalty</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <h4>Reviews</h4>
+            <ul>
+              <li>Review request flow is live and generating UGC</li>
+              <li>Moderation workflow in place — target 48 hour response on negative reviews</li>
+              <li>Widget placement stable across product detail, collection, and homepage</li>
+            </ul>
+            <h4>Loyalty &amp; Referrals</h4>
+            <ul>
+              <li>Points program is active with multi-tier VIP structure</li>
+              <li>Earning rules cover purchase, signup, birthday, reviews, social follows, referrals</li>
+              <li>Birthday reward and points reminder emails fire automatically from Yotpo</li>
+              <li>VIP tier data syncs to Klaviyo so high-value members can be segmented for early access</li>
+            </ul>
+            <h4>Yotpo vs Klaviyo — who sends what</h4>
+            <p>To avoid duplicate sends, transactional loyalty messages (points earned, reminders, tier earned, birthday reward, referral share) send from Yotpo. Everything else — welcome, abandonment, promo campaigns, post-purchase — sends from Klaviyo.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ix. Yotpo loyalty relaunch -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">ix.</span>
+          <span class="acc-title">Yotpo loyalty relaunch — new tiers &amp; CSM handover</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <p>A Yotpo platform update is in progress. The relaunch is being managed by Yotpo directly and is currently in their hands.</p>
+            <h4>New CSM contact</h4>
+            <ul>
+              <li><strong>Chloe Bullen</strong> — <a href="mailto:chloe.bullen@yotpo.com" style="color: var(--green);">chloe.bullen@yotpo.com</a></li>
+              <li>Chloe is taking over from Petta Cannon and will liaise with Mel directly regarding the platform update</li>
+            </ul>
+            <h4>Impact on Klaviyo loyalty flows</h4>
+            <p>When the new loyalty platform launches, the Klaviyo flows that reference loyalty tiers will need to be updated. The program is moving from 5 tiers to 4. The revised tier structure is below.</p>
+            <table class="data-table">
+              <thead>
+                <tr><th>Tier</th><th>Points range</th><th>Key benefits</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Curator</strong></td>
+                  <td>1–500 pts</td>
+                  <td>New Member Sign Up Bonus (one-time 10% site-wide coupon); Birthday Gift — 10% site-wide discount; Earn 1 point per $1 spent</td>
+                </tr>
+                <tr>
+                  <td><strong>Trendsetter</strong></td>
+                  <td>501–800 pts</td>
+                  <td>Everything in Curator + Trendsetter Welcome Bonus (one-time 10% site-wide discount); Early Sale Access</td>
+                </tr>
+                <tr>
+                  <td><strong>Style Icon</strong></td>
+                  <td>801–1,000 pts</td>
+                  <td>Everything in Trendsetter + Style Icon Welcome Bonus (one-time 15% site-wide discount); Enhanced Birthday Reward — 15% discount; Early Sale Access</td>
+                </tr>
+                <tr>
+                  <td><strong>Visionary</strong></td>
+                  <td>1,001–1,500 pts</td>
+                  <td>Everything in Style Icon + First Access to New Season Collections; Early Sale Access on seasonal sales</td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="callout">Any Klaviyo flows that reference tier names or tier-based conditions will need to be reviewed and updated once the new platform goes live. Confirm timing with Chloe before making changes.</div>
+            <p><a href="https://docs.google.com/spreadsheets/d/1uTNfSoVJCFZxqS7lG5nllIfuhcHz_JBxoueYvov-laI/edit?usp=sharing" target="_blank" style="color: var(--green); font-weight: 500;">↗ View full revised tier breakdown (Google Sheets)</a></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── GENERAL ── -->
+      <div class="acc-category"><span class="acc-category-label">General</span></div>
+
+      <!-- x. Looking ahead -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">x.</span>
+          <span class="acc-title">Looking ahead — June &amp; July</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <ul>
+              <li><strong>10th June</strong> — first monthly report under brand operation</li>
+              <li><strong>15th June</strong> — next scheduled Yotpo loyalty breakdown campaign</li>
+              <li><strong>Mother's Day '26 post-mortem</strong> — final wrap covering the 12-campaign series and full revenue attribution</li>
+              <li><strong>EOFY sale (late June)</strong> — Australia-specific moment, typically a strong campaign window</li>
+              <li><strong>Mid-year winter wardrobe content</strong> — counter-seasonal to northern hemisphere</li>
+              <li><strong>Shopify migration SOW</strong> — new strategic workstream in progress; scoping and documentation underway, led by Carl Nave</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- xi. Glossary -->
+      <div class="accordion-item">
+        <button class="accordion-toggle">
+          <span class="acc-num">xi.</span>
+          <span class="acc-title">Naming conventions glossary</span>
+          <span class="acc-icon"><svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2v8M2 6h8"/></svg></span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-inner">
+            <table class="data-table">
+              <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+              <tbody>
+                <tr><td><strong>[AS]</strong></td><td>Built or rebuilt by Antimony Studio</td></tr>
+                <tr><td><strong>Instant Audiences —</strong></td><td>Parallel flow on the Instant Audiences identity-resolution pool</td></tr>
+                <tr><td><strong>(Mel)</strong></td><td>Legacy flow from previous operator — still live in places</td></tr>
+                <tr><td><strong>(WITHOUT DISCOUNT)</strong></td><td>Sale-period variant used during major promos</td></tr>
+                <tr><td><strong>(May'26)</strong> and similar</td><td>Last major revision date, not creation date</td></tr>
+                <tr><td><strong>L&amp;R</strong></td><td>Yotpo Loyalty &amp; Referrals</td></tr>
+                <tr><td><strong>RPR</strong></td><td>Revenue Per Recipient</td></tr>
+                <tr><td><strong>AOV / AOC</strong></td><td>Average Order Value / Average Order Count</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- ============ SIGN OFF ============ -->
+  <section class="signoff">
+    <svg class="heart-bg left" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9C1 9 2 5 6 5c2 0 3.5 1 4 2 0.5-1 2-2 4-2 4 0 5 4 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+    <svg class="heart-bg right" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9C1 9 2 5 6 5c2 0 3.5 1 4 2 0.5-1 2-2 4-2 4 0 5 4 3.5 7-2.5 4.5-9.5 9-9.5 9z"/></svg>
+    <div class="signoff-inner">
+      <h3>Thank you for the engagement. <em>The account is in good shape.</em></h3>
+      <p>Recurring rhythms are established, winning flow variants are documented, and the performance baseline is healthy. Wishing the Femme Connection team continued success.</p>
+      <div class="sig">— Brira</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  document.querySelectorAll('.accordion-toggle').forEach(btn => {
+    btn.addEventListener('click', () => {
+      btn.parentElement.classList.toggle('open');
+    });
+  });
+</script>
+
+</body>
+</html>
